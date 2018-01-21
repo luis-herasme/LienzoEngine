@@ -1,23 +1,48 @@
 
 import { Vector, Scene, GameObject, Manager, Graphic } from '../lienzo'
 import character from './character'
+import Transform from '../components/Transform';
 
 const manager = new Manager()
+
 manager.setScene(new Scene({
   gravity: new Vector(0, 500),
   system: 'Rect',
-  backgroundColor: '#9FE6FF',
-  // bounds: [6000, 0, window.innerHeight - 150, 0]
+  backgroundColor: '#9FE6FF'
 }))
 
 // BACKGROUND
 for (let i = 0; i < 100; i++) {
   manager.add({
-    position: new Vector(i * 1920, -100),
-    sprite: 'assets/bg.png'
+    Transform: {
+      position: new Vector(i * 1920, -100)
+    },
+    Sprite: {
+      src: 'assets/bg.png'
+    }
   })
 }
 manager.add(character)
+
+const personaje = new GameObject({
+  Identifier: new Identifier({
+    name: 'Character'
+  }),
+  Transform: new Transform({
+    position: ['10px', '10px'],
+    rotation: 20
+  }),
+  Collider: new Collider({
+    size: 'fixed',
+    static: true
+  }),
+  Sprite: new Sprite({
+
+  }),
+  Script: new Script({
+    src:
+  })
+})
 
 manager.scene.renderWorld.follow(
   manager.scene.findByName('character')
@@ -51,16 +76,14 @@ for (let i = 0; i < 25; i++) {
   manager.add({
     position: new Vector(i * 500, 600),
     collider: 'fit',
-
     static: true,
     scale: new Vector(0.5, 0.5),
     spriteSheet: {
       src: 'assets/coin.png',
       size: new Vector(700/6, 200)
     },
-
     script: {
-      collision: function (other) {
+      collision (other) {
         if (other.gameObject.name === 'character') {
           other.gameObject.coins++
           this.destroy()
@@ -72,12 +95,9 @@ for (let i = 0; i < 25; i++) {
   manager.add({
     position: new Vector(i * (500 * (Math.random() + 0.5)), manager.getHeight() - 224 - (256 * 0.75)),
     collider: 'fit',
-
     static: true,
     scale: new Vector(0.75, 0.75),
-    
     sprite: 'assets/cactus.png',
-
     script: {
       collision (other) {
         if (other.gameObject.name === 'character') {
@@ -95,7 +115,7 @@ manager.add({
   collider: new Vector(100, 50),
   sprite: 'assets/Slime.png',
   script: {
-    update: function () {
+    update () {
       this.collider.addForce(new Vector(80, 0))
     }
   }
@@ -117,7 +137,7 @@ manager.add({
   sprite: 'assets/malo.png',
   static: true,
   script: {
-    update: function () {
+    update () {
       this.transform.position.x += 0.1
     }
   }

@@ -6,7 +6,7 @@ import Vector2D     from '../Vector/Vector2D'
 import { Render }   from '../render/index'
 
 export default class Manager {
-  public scene: Scene
+  public scene : Scene
   public render: Render
 
   constructor (id?: string, width?: number, height?: number) {
@@ -30,10 +30,6 @@ export default class Manager {
 
   getTranslation (): Vector2D {
     return this.scene.renderWorld.translation
-  }
-
-  run (method: string, data?: Array<any>): void {
-    this.scene.run(method, data)
   }
 
   add (gameObject): void {

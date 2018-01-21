@@ -27,9 +27,9 @@ export default class Scene {
   }
 
   add (gameObject: GameObject) {
-    gameObject.load()
-
+  
     if (gameObject.collider) {
+      gameObject.collider.load(gameObject)
       this.physicsWorld.add(gameObject.collider)
     }
 
@@ -58,7 +58,9 @@ export default class Scene {
   }
 
   run (method: string, data?: Array<any>) {
-    this.gameObjects.forEach((gameObject) => gameObject.run(method, data))
+    for (let gameObject of this.gameObjects) {
+      gameObject.run(method, data)
+    }
   }
 
   runMouseDown (mouse) {

@@ -2,9 +2,9 @@
 import Vector2D from '../Vector/Vector2D'
 
 class Transform {
-  public position: Vector2D
-  public scale: Vector2D
-  private rotation: number
+  public position : Vector2D
+  public scale    : Vector2D
+  public rotation : number
 
   constructor (position = new Vector2D(0, 0), scale = new Vector2D(1, 1), rotation = 0) {
     this.position = position

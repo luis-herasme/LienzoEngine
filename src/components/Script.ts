@@ -1,9 +1,8 @@
 
-import GameObject from './GameObject'
+import GameObject from '../manager/GameObject'
 
-class ScriptManager {
-
-  private methods: Object = {}
+export default class ScriptManager {
+  private methods   : Object = {}
   private gameObject: GameObject
 
   constructor (gameObject: GameObject) {
@@ -11,27 +10,25 @@ class ScriptManager {
   }
 
   add (scripts: Array<Object>): void {
-    scripts.forEach(script => this.addOne(script))
+    for (let script of scripts) {
+      this.one(script)
+    }
   }
 
-  addOne (script): void {
-    Object.keys(script).forEach(method => {
-      if (!this.methods[method]) this.methods[method] = []
+  one (script): void {
+    for (let method of Object.keys(script)) {
+      if (!this.methods[method]) {
+        this.methods[method] = []
+      }
       this.methods[method].push(script[method].bind(this.gameObject))
-    })
+    }
   }
 
   run (name, params): void {
     if (this.methods[name]) {
       this.methods[name].forEach(method => {
-        //if (params) {
         method(...params)
-        /*} else {
-          method()
-        }*/
       })
     }
   }
 }
-
-export default ScriptManager
