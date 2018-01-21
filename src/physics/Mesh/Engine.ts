@@ -1,5 +1,5 @@
 
-const vector = require('vector_functions')
+const vector = require('../../Vector/vectorFunctions')
 
 function meshIntersect (mesh, mesh2) {
   mesh.vertices.points.forEach((vertex, index) => {

@@ -6,15 +6,22 @@ export default class AnimationComponent {
   private src       : string
   private size      : Vector2D
   private frameRate : number
+  private loop      : boolean
 
   constructor (config) {
-    this.src = config.src
-    this.size = config.size? config.size: 100
+    this.src       = config.src
+    this.loop      = config.loop
+    this.size      = config.size? config.size: 100
     this.frameRate = config.frameRate? config.frameRate: new Vector2D(10, 10)
   }
   
   load (gameObject) {
-    const animation = new Animation(this.src, gameObject.Transform.scale, gameObject.Transform.position, this.frameRate, this.size)
+    const animation = new Animation(
+      this.src,
+      gameObject.Transform.scale,
+      gameObject.Transform.position,
+      this.frameRate,
+      this.size)
     gameObject.graphics.push(animation)
   }
 } 

@@ -3,15 +3,14 @@ import Vector2D from '../../Vector/Vector2D'
 import Collider from './Collider'
 
 class Dynamic  extends Collider {
-
-  public velocity: Vector2D = new Vector2D(0, 0)
-  public acceleration: Vector2D = new Vector2D(0, 0)
-  public restitution: number
-  public dynamic: boolean = true
-  public mass: number
-  public futurePosition: Vector2D
-  public moved: boolean = false
-  public friction: number
+  public velocity       : Vector2D = new Vector2D(0, 0)
+  public acceleration   : Vector2D = new Vector2D(0, 0)
+  public restitution    : number
+  public dynamic        : boolean = true
+  public mass           : number
+  public futurePosition : Vector2D
+  public moved          : boolean = false
+  public friction       : number
 
   constructor (config) {
     super(config.position, config.radius)

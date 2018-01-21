@@ -1,6 +1,6 @@
 
 const Vector = require('vector_class')
-const vec = require('vector_functions')
+const vec = require('../../Vector/vectorFunctions')
 const Figure = require('./Figure')
 
 function Body (type, config) {

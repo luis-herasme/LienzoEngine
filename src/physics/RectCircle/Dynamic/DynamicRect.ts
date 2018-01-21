@@ -1,12 +1,20 @@
 
-import DynamicBody from './DynamicBody'
+import DynamicBody  from './DynamicBody'
+import Vector2D     from '../../../Vector/Vector2D'
 
 class DynamicRect extends DynamicBody {
-  constructor (position, size, restitution = 1) {
+  public size     : Vector2D
+  public mass     : number
+  public type     : string
+  public collides : Function
+
+  constructor (position, size, restitution = 1, collides) {
     super(position, restitution)
-    this.size = size
-    this.mass = size.x * size.y
-    this.type = 'rect'
+
+    this.collides = collides
+    this.size     = size
+    this.mass     = size.x * size.y
+    this.type     = 'rect'
   }
 
   circleCollision (circle) {
@@ -18,12 +26,12 @@ class DynamicRect extends DynamicBody {
 
     if (distX <= (this.size.x / 2)) {
       circle.velocity.y *= -1
-      this.coliciona(this)
+      this.collides(this)
     }
 
     if (distY <= (this.size.y / 2)) {
       circle.velocity.x *= -1
-      this.coliciona(circle)
+      this.collides(circle)
     }
 
     const dx = distX - this.size.x / 2
@@ -31,7 +39,7 @@ class DynamicRect extends DynamicBody {
 
     if (dx * dx + dy * dy <= (circle.radius * circle.radius)) {
       circle.velocity.addAngle(90)
-      this.coliciona(circle)
+      this.collides(circle)
     }
   }
 

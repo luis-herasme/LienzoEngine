@@ -8,6 +8,7 @@ import Render         from '../render/Render'
 
 export default class Scene {
   public stage           : Dibujo.Scene = new Dibujo.Scene()
+  public gui             : Dibujo.Scene = new Dibujo.Scene()
   private physicsWorld   : Rect.World = new Rect.World()
   private gameObjects    : Array<GameObject> = []
   private background     : string = '#000000'
@@ -28,6 +29,10 @@ export default class Scene {
     this.stage.renderer = render
     this.stage.context = render.context
     this.stage.smoth(false)
+
+    this.gui.renderer = render
+    this.gui.context = render.context
+    this.gui.smoth(false)
   }
 
   load (gameObject: Object): void {

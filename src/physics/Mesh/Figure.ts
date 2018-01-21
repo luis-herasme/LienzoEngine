@@ -1,5 +1,5 @@
 
-const vector = require('vector_functions')
+const vector = require('../../Vector/vectorFunctions')
 
 function Figure () {
   this.points = []

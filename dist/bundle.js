@@ -422,6 +422,7 @@ var Component = __webpack_require__(24);
 var Scene = (function () {
     function Scene(config) {
         this.stage = new Dibujo.Scene();
+        this.gui = new Dibujo.Scene();
         this.physicsWorld = new index_1.Rect.World();
         this.gameObjects = [];
         this.background = '#000000';
@@ -438,6 +439,9 @@ var Scene = (function () {
         this.stage.renderer = render;
         this.stage.context = render.context;
         this.stage.smoth(false);
+        this.gui.renderer = render;
+        this.gui.context = render.context;
+        this.gui.smoth(false);
     };
     Scene.prototype.load = function (gameObject) {
         this.add(create(load(gameObject)));
@@ -962,6 +966,8 @@ var Color_1 = __webpack_require__(13);
 exports.Color = Color_1["default"];
 var Graphic_1 = __webpack_require__(2);
 exports.Graphic = Graphic_1["default"];
+var number_1 = __webpack_require__(51);
+exports.number = number_1["default"];
 var Vector = Vector2D_1["default"];
 exports.Vector = Vector;
 
@@ -988,20 +994,14 @@ exports.World = World_1["default"];
 "use strict";
 
 var Vector2D_1 = __webpack_require__(1);
-function id() {
-    var ID = '';
-    for (var i = 0; i < 10; i++) {
-        ID += Math.round(Math.random() * 100);
-    }
-    return ID;
-}
+var id_js_1 = __webpack_require__(52);
 var Circle = (function () {
     function Circle(position, radius) {
         this.position = new Vector2D_1["default"](0, 0);
         this.radius = 5;
         this.position = position;
         this.radius = radius;
-        this.id = id();
+        this.id = id_js_1["default"]();
     }
     return Circle;
 }());
@@ -1269,13 +1269,15 @@ exports["default"] = gObject;
 
 var Vector2D_1 = __webpack_require__(1);
 var Animation = (function () {
-    function Animation(src, scale, position, frameRate, size) {
+    function Animation(src, scale, position, frameRate, size, loop) {
         if (scale === void 0) { scale = new Vector2D_1["default"](1, 1); }
         if (position === void 0) { position = new Vector2D_1["default"](1, 1); }
         if (frameRate === void 0) { frameRate = 100; }
         if (size === void 0) { size = new Vector2D_1["default"](32, 32); }
+        if (loop === void 0) { loop = true; }
         var _this = this;
         this.loop = true;
+        this.loop = loop;
         this.load(src);
         this.size = size;
         this.position = position;
@@ -1344,16 +1346,10 @@ exports.Collider = Collider_1["default"];
 
 "use strict";
 
-function id() {
-    var ID = '';
-    for (var i = 0; i < 10; i++) {
-        ID += Math.round(Math.random() * 100);
-    }
-    return ID;
-}
+var id_js_1 = __webpack_require__(52);
 var Identifier = (function () {
     function Identifier(name, tags) {
-        this.id = id();
+        this.id = id_js_1["default"]();
         this.name = name;
         this.tags = tags;
     }
@@ -1771,64 +1767,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 37 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-throw new Error("Cannot find module \"../../Vector\"");
-
-
-
-class DinamicBody {
-  constructor (position = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0), restitution = 1) {
-    this.restitution = restitution
-    this.position = position
-    this.velocity = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0)
-    this.acceleration = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0)
-
-    this.isDynamic = true
-  }
-
-  addForce (force) {
-    this.acceleration.add(force)
-  }
-
-  momentum () {
-    return __WEBPACK_IMPORTED_MODULE_0__Vector___default.a.mult(this.velocity, this.mass)
-  }
-
-  inelasticCollision (other) {
-    const velocity1 = this.velocity
-    const velocity2 = other.velocity
-    const totalMomentum = other.momentum()
-    totalMomentum.add(this.momentum())
-    const totalMass = this.mass + other.mass
-
-    // This velociry
-    this.velocity = __WEBPACK_IMPORTED_MODULE_0__Vector___default.a.sub(velocity2, velocity1)
-    this.velocity.mult(this.restitution * other.mass)
-    this.velocity.add(totalMomentum)
-    this.velocity.div(totalMass)
-
-    // Other velociry
-    other.velocity = __WEBPACK_IMPORTED_MODULE_0__Vector___default.a.sub(velocity1, velocity2)
-    other.velocity.mult(other.restitution * this.mass)
-    other.velocity.add(totalMomentum)
-    other.velocity.div(totalMass)
-  }
-
-  update () {
-    this.acceleration.div(this.mass)
-    this.velocity.add(this.acceleration)
-    this.position.add(this.velocity)
-    this.acceleration.zero()
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (DinamicBody);
-
-
-/***/ }),
+/* 37 */,
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1894,534 +1833,67 @@ exports.body = body;
 
 /***/ }),
 /* 39 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../../Vector\"");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__DynamicBody__ = __webpack_require__(37);
-
-
-
-
-class DynamicCircle extends __WEBPACK_IMPORTED_MODULE_1__DynamicBody__["a" /* default */] {
-  constructor (position, radius, restitution) {
-    super(position, restitution)
-    this.radius = radius
-    this.mass = Math.PI * Math.pow(this.radius, 2)
-    this.type = 'circle'
-  }
-
-  circleCollision (other) {
-    const distance = __WEBPACK_IMPORTED_MODULE_0__Vector___default.a.sub(this.position, other.position)
-    if (distance.mag() < this.radius + other.radius && distance.mag()) {
-      const direction = __WEBPACK_IMPORTED_MODULE_0__Vector___default.a.normalize(distance)
-      direction.mult(this.radius + other.radius)
-      direction.sub(distance)
-      this.position.add(direction)
-
-      if (other.isDynamic) {
-        this.inelasticCollision(other)
-      } else {
-        this.velocity.inverse()
-      }
-      this.coliciona(other)
-    }
-  }
-
-  rectCollision (rect) {
-    const distX = Math.abs(this.position.x - rect.position.x - rect.size.x / 2)
-    const distY = Math.abs(this.position.y - rect.position.y - rect.size.y / 2)
-
-    if (distX > (rect.size.x / 2 + this.radius)) return false
-    if (distY > (rect.size.y / 2 + this.radius)) return false
-
-    if (distX <= (rect.size.x / 2)) {
-      this.velocity.y *= -1
-      this.coliciona(rect)
-    }
-
-    if (distY <= (rect.size.y / 2)) {
-      this.velocity.x *= -1
-      this.coliciona(rect)
-    }
-
-    const dx = distX - rect.size.x / 2
-    const dy = distY - rect.size.y / 2
-
-    if (dx * dx + dy * dy <= (this.radius * this.radius)) {
-      this.velocity.addAngle(90)
-      this.coliciona(rect)
-    }
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (DynamicCircle);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicCircle.js'");
 
 /***/ }),
 /* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DynamicBody__ = __webpack_require__(37);
-
-
-
-class DynamicBox extends __WEBPACK_IMPORTED_MODULE_0__DynamicBody__["a" /* default */] {
-  constructor (position, side, restitution = 1) {
-    super(position, restitution)
-    this.side = side
-    this.mass = Math.pow(this.side, 2)
-    this.type = 'box'
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (DynamicBox);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicBox.js'");
 
 /***/ }),
 /* 41 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DynamicBody__ = __webpack_require__(37);
-
-
-
-class DynamicRect extends __WEBPACK_IMPORTED_MODULE_0__DynamicBody__["a" /* default */] {
-  constructor (position, size, restitution = 1) {
-    super(position, restitution)
-    this.size = size
-    this.mass = size.x * size.y
-    this.type = 'rect'
-  }
-
-  circleCollision (circle) {
-    const distX = Math.abs(circle.position.x - this.position.x - this.size.x / 2)
-    const distY = Math.abs(circle.position.y - this.position.y - this.size.y / 2)
-
-    if (distX > (this.size.x / 2 + circle.radius)) return false
-    if (distY > (this.size.y / 2 + circle.radius)) return false
-
-    if (distX <= (this.size.x / 2)) {
-      circle.velocity.y *= -1
-      this.coliciona(this)
-    }
-
-    if (distY <= (this.size.y / 2)) {
-      circle.velocity.x *= -1
-      this.coliciona(circle)
-    }
-
-    const dx = distX - this.size.x / 2
-    const dy = distY - this.size.y / 2
-
-    if (dx * dx + dy * dy <= (circle.radius * circle.radius)) {
-      circle.velocity.addAngle(90)
-      this.coliciona(circle)
-    }
-  }
-
-  rectCollision (rect) {
-
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (DynamicRect);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicRect.js'");
 
 /***/ }),
 /* 42 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../../Vector\"");
-
-
-
-class StaticCircle {
-  constructor (position = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0), radius = 5) {
-    this.position = position
-    this.radius = radius
-    this.type = 'circle'
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (StaticCircle);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticCircle.js'");
 
 /***/ }),
 /* 43 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../../Vector\"");
-
-
-
-class StaticBox {
-  constructor (position = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0), side = 5) {
-    this.position = position
-    this.side = side
-    this.type = 'box'
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (StaticBox);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticBox.js'");
 
 /***/ }),
 /* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../../Vector\"");
-
-
-
-class StaticBox {
-  constructor (position = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(0, 0), size = new __WEBPACK_IMPORTED_MODULE_0__Vector___default.a(5, 5)) {
-    this.position = position
-    this.size = size
-    this.type = 'rect'
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (StaticBox);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticRect.js'");
 
 /***/ }),
 /* 45 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../../Vector\"");
-
-
-
-class World {
-  constructor () {
-    this.dynamicParticles = []
-    this.circleParticles = []
-    this.rectParticles = []
-
-    this.maxPositionX = window.innerWidth
-    this.minPositionX = 0
-    this.maxPositionY = window.innerHeight
-    this.minPositionY = 0
-  }
-
-  add (particle) {
-    if (particle.type === 'circle') {
-      this.circleParticles.push(particle)
-    } else if (particle.type === 'rect') {
-      this.rectParticles.push(particle)
-    }
-
-    if (particle.isDynamic) {
-      this.dynamicParticles.push(particle)
-    }
-  }
-
-  remove (particle) {
-    if (particle.type === 'circle') {
-      this.circleParticles.splice(this.circleParticles.indexOf(particle), 1)
-    } else if (particle.type === 'rect') {
-      this.rectParticles.splice(this.rectParticles.indexOf(particle), 1)
-    }
-
-    if (particle.isDynamic) {
-      this.dynamicParticles.splice(this.dynamicParticles.indexOf(particle), 1)
-    }
-  }
-
-  update () {
-    this.dynamicParticles.forEach((particle) => {
-      this.insideWorldBounds(particle)
-      particle.update()
-
-      this.circleParticles.forEach((circle) => {
-        particle.circleCollision(circle)
-      })
-
-      this.rectParticles.forEach((rect) => {
-        particle.rectCollision(rect)
-      })
-    })
-  }
-
-  insideWorldBounds (particle) {
-    // Horizontal bounds
-    if (particle.position.x + particle.radius > this.maxPositionX) {
-      particle.position.x = this.maxPositionX - particle.radius
-      particle.velocity.x *= -1
-    } else if (particle.position.x - particle.radius < this.minPositionX) {
-      particle.position.x = this.minPositionX + particle.radius
-      particle.velocity.x *= -1
-    }
-    // Vectical bounds
-    if (particle.position.y + particle.radius > this.maxPositionY) {
-      particle.position.y = this.maxPositionY - particle.radius
-      particle.velocity.y *= -1
-    } else if (particle.position.y - particle.radius < this.minPositionY) {
-      particle.position.y = this.minPositionY + particle.radius
-      particle.velocity.y *= -1
-    }
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (World);
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\World\\World.js'");
 
 /***/ }),
 /* 46 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-
-const Body = __webpack_require__(47)
-const Engine = __webpack_require__(49)
-
-module.exports = { Body, Engine }
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\Mesh\\index.js'");
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */
+/***/ (function(module, exports) {
 
-
-const Vector = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vector_class\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
-const vec = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vector_functions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
-const Figure = __webpack_require__(48)
-
-function Body (type, config) {
-  this.mass = config.mass ? config.mass : 1
-  this.friction = config.friction ? config.friction : 1
-  this.restitution = config.restitution ? config.restitution : 0.9
-  this.aceleration = config.aceleration ? new Vector(...config.aceleration) : new Vector(0, 0)
-  this.velocity = config.velocity ? new Vector(...config.velocity) : new Vector(0, 0)
-  this.collision = config.collision
-  this.name = config.name
-  this.type = type
-
-  if (type !== 'Circle') {
-    this.update = () => {
-      this.velocity.add(this.aceleration)
-      this.vertices.translate(this.velocity)
-      this.velocity.mult(this.friction)
-      this.center = this.vertices.center()
-      this.aceleration.mult(0)
-      this.far = this.vertices.far(this.center)
-    }
-  } else {
-    this.update = () => {
-      this.velocity.add(this.aceleration)
-      this.center = vec.add(this.center, this.velocity.value)
-      this.velocity.mult(this.friction)
-      this.aceleration.mult(0)
-    }
-  }
-
-  this.addForce = (force) => {
-    force.mult(1 / this.mass)
-    this.aceleration.add(force)
-  }
-
-  if (type === 'Circle') {
-    this.center = config.position
-    this.far = config.radius
-  } else {
-    this.vertices = new Figure()
-    if (type === 'Mesh') {
-      config.vertices.forEach((vertex) => this.vertices.add(vertex))
-    } else if (type === 'Box') {
-      const pointY = vec.add(config.position, [0, config.side])
-      const pointX = vec.add(config.position, [config.side, 0])
-      const pointXY = vec.add(config.position, [config.side, config.side])
-
-      this.vertices.add(config.position)
-      this.vertices.add(pointX)
-      this.vertices.add(pointXY)
-      this.vertices.add(pointY)
-    } else if (type === 'Rect') {
-      const pointY = vec.add(config.position, [0, config.height])
-      const pointX = vec.add(config.position, [config.width, 0])
-      const pointXY = vec.add(config.position, [config.width, config.height])
-
-      this.vertices.add(config.position)
-      this.vertices.add(pointX)
-      this.vertices.add(pointXY)
-      this.vertices.add(pointY)
-    }
-    this.center = this.vertices.center()
-    this.far = this.vertices.far(this.center)
-  }
-
-  return this
-}
-
-module.exports = Body
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\utils\\number.js'");
 
 /***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 52 */
+/***/ (function(module, exports) {
 
-
-const vector = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vector_functions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
-
-function Figure () {
-  this.points = []
-  this.rotation = 0
-
-  this.add = (point) => {
-    this.points.push(point)
-  }
-
-  this.translate = (vec) => {
-    this.points = this.points.map((x) => vector.add(x, vec))
-  }
-
-  this.rotate = (rotation) => {
-    this.points = this.points.map((x) => vector.setAngle(x, this.rotation + rotation))
-  }
-
-  this.scale = (vec) => {
-    this.points = this.points.map((x) => vector.mult(x, vec))
-  }
-
-  this.center = () => vector.average(this.points)
-
-  this.far = (center) => {
-    return vector.mag(this.points.reduce((a, c) => {
-      if (vector.distance(a, center) > vector.distance(c, center)) return a
-      else return c
-    }))
-  }
-
-  return this
-}
-
-module.exports = Figure
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-const vector = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vector_functions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
-
-function meshIntersect (mesh, mesh2) {
-  mesh.vertices.points.forEach((vertex, index) => {
-    mesh2.vertices.points.forEach((vertex2, index2) => {
-      let end
-
-      if (index !== mesh.vertices.points.length - 1) {
-        end = mesh.vertices.points[index + 1]
-      } else end = mesh.vertices.points[0]
-
-      let end2
-      if (index2 !== mesh2.vertices.points.length - 1) {
-        end2 = mesh2.vertices.points[index2 + 1]
-      } else end2 = mesh2.vertices.points[0]
-
-      const i = vector.linearIntersect(vertex, end, vertex2, end2)
-      if (i[0] !== 1 && i[1] !== 1) {
-        collision(mesh, mesh2)
-      }
-    })
-  })
-}
-
-function circleIntersect (circle, _circle) {
-  if (vector.distance(circle.center, _circle.center) < circle.far + _circle.far) {
-    collision(circle, _circle)
-  }
-}
-
-function meshCircleIntersect (mesh, circle) {
-  mesh.vertices.points.forEach((vertex) => {
-    if (vector.distance(vertex, circle.center) < circle.far) collision(mesh, circle)
-  })
-}
-
-function collision (body, _body) {
-  if (body.collision) body.collision(body, _body)
-  if (_body.collision) _body.collision(_body, body)
-}
-
-let idCounter = 0
-
-function Engine () {
-  this.bodies = []
-
-  this.add = (body) => {
-    body.id = idCounter++
-    this.bodies.push(body)
-  }
-
-  this.destroy = (body) => {
-    this.bodies = this.bodies.filter((b) => {
-      return b.id !== body.id
-    })
-  }
-
-  this.setBounds = (bounds) => {
-    this.bounds = bounds
-  }
-
-  this.removeBounds = () => {
-    this.bounds = false
-  }
-
-  this.update = () => {
-    this.bodies.forEach((body, index) => {
-      body.update()
-      if (this.bounds) {
-        if (body.center[0] <= this.bounds[0]) {
-          body.center[0] = this.bounds[0]
-          body.velocity.mult(body.restitution)
-          body.velocity.value[0] *= -1
-        } else if (body.center[0] >= this.bounds[1]) {
-          body.center[0] = this.bounds[1]
-          body.velocity.mult(body.restitution)
-          body.velocity.value[0] *= -1
-        }
-
-        if (body.center[1] <= this.bounds[2]) {
-          body.center[1] = this.bounds[2]
-          body.velocity.mult(body.restitution)
-          body.velocity.value[1] *= -1
-        } else if (body.center[1] >= this.bounds[3]) {
-          body.center[1] = this.bounds[3]
-          body.velocity.mult(body.restitution)
-          body.velocity.value[1] *= -1
-        }
-      }
-
-      this.bodies.forEach((body2, index2) => {
-        if (index !== index2) {
-          if (vector.distance(body.center, body2.center) < body.far + body2.far) {
-            if (body.type !== 'Circle' && body2.type !== 'Circle') meshIntersect(body, body2)
-            else if (body.type !== 'Circle' && body2.type === 'Circle') meshCircleIntersect(body, body2)
-            else if (body.type === 'Circle' && body2.type !== 'Circle') meshCircleIntersect(body2, body)
-            else circleIntersect(body, body2)
-          }
-        }
-      })
-    })
-  }
-}
-
-module.exports = Engine
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\utils\\id.js'");
 
 /***/ })
 /******/ ]);

@@ -20,9 +20,10 @@ class Animation {
     scale: Vector2D = new Vector2D(1, 1),
     position: Vector2D = new Vector2D(1, 1),
     frameRate: number = 100,
-    size: Vector2D = new Vector2D(32, 32)
+    size: Vector2D = new Vector2D(32, 32),
+    loop = true
   ) {
-
+    this.loop = loop
     this.load(src)
     this.size = size
     this.position = position

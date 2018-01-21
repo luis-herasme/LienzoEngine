@@ -1,8 +1,9 @@
 
-import Circle from './Circle'
-import { Vector2D } from 'vector_class'
-import Collider from './Collider'
-import Dynamic from './Dynamic'
+import Circle       from './Circle'
+import Vector2D     from '../../Vector/Vector2D'
+import Collider     from './Collider'
+import Dynamic      from './Dynamic'
+
 class Trigger extends Circle {
   private particlesInside: Array<any>
 

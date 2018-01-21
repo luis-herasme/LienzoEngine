@@ -1,6 +1,6 @@
 
-import Vector from '../../Vector'
-import DynamicBody from './DynamicBody'
+import Vector       from '../../Vector'
+import DynamicBody  from './DynamicBody'
 
 class DynamicCircle extends DynamicBody {
   constructor (position, radius, restitution) {
