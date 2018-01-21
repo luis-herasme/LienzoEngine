@@ -1,0 +1,6 @@
+{
+  "files": [
+    "./src/game/index.ts",
+    "./src/lienzo.ts"
+  ]
+}

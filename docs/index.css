@@ -1,0 +1,35 @@
+body {
+  text-align: center;
+  background: #111;
+}
+
+#logo {
+  width: 100%;
+}
+
+.card {
+  text-align: left;
+}
+
+p {
+  font-size: 16px;
+}
+
+.card-title {
+  font-weight:bold !important;
+}
+.collection .collection-item.active {
+  font-weight:bold !important;
+  background: #000;
+  color: rgb(255, 255, 255)!important;
+}
+.container {
+  margin-top: 1%;
+}
+.collection a.collection-item {
+  font-weight:bold !important;
+  display: block;
+  -webkit-transition: .25s;
+  transition: .25s;
+  color: rgba(0,0,0,0.87)!important;
+}

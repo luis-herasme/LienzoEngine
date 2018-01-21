@@ -1,60 +1,23 @@
 
-/* global __dirname, require, module */
-
-const webpack = require('webpack')
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
 const path = require('path')
-const env = require('yargs').argv.env // use --env with webpack 2
 
-let libraryName = 'Library'
-
-let plugins = [], outputFile
-
-if (env === 'build') {
-  plugins.push(new UglifyJsPlugin({ minimize: true }))
-  outputFile = libraryName + '.min.js'
-} else {
-  outputFile = libraryName + '.js'
-}
-
-const config = {
-  entry: path.join(__dirname, '/src/index'),
-  devtool: 'source-map',
+module.exports = {
+  context: __dirname,
+  entry: './src/game/index.ts',
   output: {
-    path: path.join(__dirname, '/lib'),
-    filename: outputFile,
-    library: libraryName,
+    path: path.join(__dirname, '/dist'),
+    filename: 'bundle.js',
+    // export itself to a global var
     libraryTarget: 'umd',
-    umdNamedDefine: true
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.json$/,
-        loader: 'json'
-      },
-      {
-        include: path.resolve(__dirname, 'node_modules/pixi.js'),
-        loader: 'transform-loader',
-        enforce: 'post'
-      }
-    ]
+    // name of the global var: "Foo"
+    library: 'Vector'
   },
   resolve: {
-    modules: [path.resolve('./node_modules'), path.resolve('./src')],
-    extensions: ['.json', '.js']
+    extensions: ['.ts', '.tsx', '.js']
   },
-  plugins: plugins
+  module: {
+    rules: [
+      { test: /\.tsx?$/, loader: 'ts-loader' }
+    ]
+  }
 }
-
-/*
-,
-  postLoaders: [
-    {
-      include: path.resolve(__dirname, 'node_modules/pixi.js'),
-      loader: 'transform?brfs'
-    }
-  ]
-*/
-
-module.exports = config
