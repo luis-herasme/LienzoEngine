@@ -40,7 +40,15 @@ class Sprite {
     this.context.rotate(this.rotation)
     const realWidth = this.scale.x * this.image.width
     const realHeight = this.scale.y * this.image.height
-    this.context.drawImage(this.image, -(realWidth * this.anchor.x), -(realHeight * this.anchor.y), realWidth, realHeight)
+
+    this.context.drawImage(
+      this.image,
+      -(realWidth * this.anchor.x),
+      -(realHeight * this.anchor.y),
+      realWidth,
+      realHeight
+    )
+
     this.context.restore()
   }
 }

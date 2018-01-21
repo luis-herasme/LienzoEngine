@@ -26,9 +26,9 @@ export default class ScriptManager {
 
   run (name, params): void {
     if (this.methods[name]) {
-      this.methods[name].forEach(method => {
+      for (let method of this.methods[name]) {
         method(...params)
-      })
+      }
     }
   }
 }

@@ -4,11 +4,12 @@ import Transform     from '../components/Transform'
 import Scene         from './Scene'
 import Graphic       from '../render/Graphic'
 import { Sprite }    from '../render/index'
+import Collider      from '../components/Collider' 
 
 export default class GameObject {
   private scripts   : ScriptManager = new ScriptManager(this)
   public graphics   : Array<Graphic> = []
-  public collider   : Dynamic
+  public collider   : Collider
   public sprite     : Sprite
   public scene      : Scene
   public Transform  : Transform

@@ -5,35 +5,30 @@ import GameObject   from './GameObject'
 import Vector2D     from '../Vector/Vector2D'
 import { Render }   from '../render/index'
 
-export default class Manager {
-  public scene : Scene
-  public render: Render
+export default class Manager extends Render {
+  public gameScene : Scene
 
-  constructor (id?: string, width?: number, height?: number) {
-    this.render = new Render(id, width, height)
-    this.setScene(new Scene())
+  constructor (config, id?: string, width?: number, height?: number) {
+    super(id, width, height)
+    this.setScene(new Scene(config))
     initEvents(this)
   }
 
   setScene (scene: Scene) {
-    this.scene = scene
-    this.scene.setRender(this.render)
+    this.gameScene = scene
+    this.gameScene.setRender(this)
   }
 
   getWidth (): number {
-    return this.render.getWidth()
+    return this.getWidth()
   }
 
   getHeight (): number {
-    return this.render.getHeight()
+    return this.getHeight()
   }
 
   getTranslation (): Vector2D {
-    return this.scene.renderWorld.translation
-  }
-
-  add (gameObject): void {
-    this.scene.add(new GameObject(gameObject))
+    return this.gameScene.stage.translation
   }
 
   update (): void {

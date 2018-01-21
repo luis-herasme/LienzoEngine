@@ -27,7 +27,13 @@ class Scene {
 
   clear (color: string = '#000'): void {
     this.context.fillStyle = color
-    this.context.fillRect(-this.translation.x, 0, window.innerWidth, window.innerHeight)
+
+    this.context.fillRect(
+      -this.translation.x,
+      0,
+      window.innerWidth,
+      window.innerHeight
+    )
   }
 
   follow (gameObject) {

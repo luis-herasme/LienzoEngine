@@ -2,25 +2,30 @@
 import { Vector, Graphic } from '../lienzo'
 
 export default {
-  name: 'character',
-  position: new Vector(0, 0),
-  scale: new Vector(2, 2),
-  collider: 'fit',
+  Identifier: {
+    name: 'character'
+  },
 
-  spriteSheet: {
+  Transform: {
+    position: new Vector(0, 0),
+    scale: new Vector(2, 2)
+  },
+
+  Collider: {
+    size: 'fit'
+  },
+
+  Animation: {
     src: 'assets/walk.png',
     size: new Vector(16, 28)
   },
 
-  script: {
+  Script: {
     init () {
       this.jump = true
-      this.reversed = false
       this.coins = 0
       this.health = 30
-
       let x = new Graphic(function () {
-        //this.rect(-this.position.x + 50, this.position.y + 50, 30 * 10, 30)
         this.text(`Monedas: ${this.gameObject.coins}`, -this.position.x + 50, this.position.y + 75, { fillStyle: '#FFF', font: 'bold 34px Helvetica', lineWidth: 1 }, true)
       }, new Vector(0, 0))
 
@@ -42,43 +47,16 @@ export default {
         this.text(`Monedas ${this.gameObject.coins}`, this.position.x, this.position.y, { fillStyle: '#f00', font: '34px Arial bold' })
       }, this.transform.position)
       x.gameObject = this
+
       this.scene.renderWorld.add(x)
-
-      setTimeout(() => {
-        this.scene.renderWorld.remove(x)
-      }, 1000)
-    },
-
-    collision: function () {
-      // console.log('2x Ouch..')
+      setTimeout(() => this.scene.renderWorld.remove(x), 1000)
     },
 
     keyPress (keys) {
-      if (keys['ArrowRight']) {
-        this.collider.addForce(new Vector(1000, 0))
-      }
-      if (keys['ArrowLeft']) {
-        this.collider.addForce(new Vector(-1000, 0))
-      }
-      if (keys['ArrowDown']) {
-        this.collider.addForce(new Vector(0, 1000))
-      }
-      if (keys['ArrowUp']) {
-        this.run('jump')
-      }
-
-      if (keys['d']) {
-        this.collider.addForce(new Vector(1000, 0))
-      }
-      if (keys['a']) {
-        this.collider.addForce(new Vector(-1000, 0))
-      }
-      if (keys['s']) {
-        this.collider.addForce(new Vector(0, 1000))
-      }
-      if (keys['w']) {
-        this.run('jump')
-      }
+      if (keys['d']) this.collider.addForce(new Vector(1000, 0))
+      if (keys['a']) this.collider.addForce(new Vector(-1000, 0))
+      if (keys['s']) this.collider.addForce(new Vector(0, 1000))
+      if (keys['w']) this.run('jump')
     },
 
     update () {

@@ -1,41 +1,49 @@
 
-import { Rect }     from '../physics/index'
-import Vector2D     from '../Vector/Vector2D'
-import * as Dibujo  from '../render/index'
-import GameObject   from './GameObject'
+import { Rect }       from '../physics/index'
+import Vector2D       from '../Vector/Vector2D'
+import * as Dibujo    from '../render/index'
+import GameObject     from './GameObject'
+import * as Component from '../components/components'
+import Render         from '../render/Render'
 
 export default class Scene {
-  private physicsWorld = new Rect.World()
-  private gameObjects = []
-
-  public renderWorld: Dibujo.Scene = new Dibujo.Scene()
-  public paused: boolean = false
-  public backgroundColor: string = '#000000'
+  public stage           : Dibujo.Scene = new Dibujo.Scene()
+  private physicsWorld   : Rect.World = new Rect.World()
+  private gameObjects    : Array<GameObject> = []
+  private background     : string = '#000000'
+  private paused         : boolean = false
 
   constructor (config?) {
-    if (config) {
-      this.physicsWorld = new Rect.World(config.gravity)
-      if (config.backgroundColor) this.backgroundColor = config.backgroundColor
-      if (config.bounds) this.physicsWorld.setBounds(config.bounds)
+    this.physicsWorld = new Rect.World(config.gravity)
+
+    if (config.background) {
+      this.background = config.background
+    }
+    if (config.bounds) {
+      this.physicsWorld.setBounds(config.bounds)
     }
   }
 
-  setRender (render) {
-    this.renderWorld.renderer = render
-    this.renderWorld.context = render.context
-    this.renderWorld.smoth(false)
+  setRender (render: Render): void {
+    this.stage.renderer = render
+    this.stage.context = render.context
+    this.stage.smoth(false)
+  }
+
+  load (gameObject: Object): void {
+    this.add(create(load(gameObject)))
   }
 
   add (gameObject: GameObject) {
   
+    for (let graphic of gameObject.graphics) {
+      this.stage.add(graphic)
+    }
+
     if (gameObject.collider) {
       gameObject.collider.load(gameObject)
       this.physicsWorld.add(gameObject.collider)
     }
-
-    gameObject.graphics.forEach(graphic => {
-      this.renderWorld.add(graphic)
-    })
 
     gameObject.scene = this
     gameObject.run('init')
@@ -51,9 +59,9 @@ export default class Scene {
   }
 
   update () {
-    this.renderWorld.clear(this.backgroundColor)
+    this.stage.clear(this.background)
     this.physicsWorld.update()
-    this.renderWorld.update()
+    this.stage.update()
     this.run('update')
   }
 
@@ -64,13 +72,13 @@ export default class Scene {
   }
 
   runMouseDown (mouse) {
-    const translation = this.renderWorld.translation
+    const translation = this.stage.translation
     this.gameObjects.forEach(gameObject => {
       if (gameObject.collider) {
-        if (mouse.x > gameObject.transform.position.x + translation.x &&
-          mouse.x < gameObject.transform.position.x + translation.x + gameObject.collider.size.x &&
-          mouse.y > gameObject.transform.position.y + translation.y &&
-          mouse.y < gameObject.transform.position.y + translation.y + gameObject.collider.size.y) {
+        if (mouse.x > gameObject.Transform.position.x + translation.x &&
+          mouse.x < gameObject.Transform.position.x + translation.x + gameObject.collider.size.x &&
+          mouse.y > gameObject.Transform.position.y + translation.y &&
+          mouse.y < gameObject.Transform.position.y + translation.y + gameObject.collider.size.y) {
           gameObject.run('mouseDown', mouse)
         }
       }
@@ -84,7 +92,17 @@ export default class Scene {
       this.physicsWorld.remove(gameObject.collider)
     }
     if (gameObject.sprite) {
-      this.renderWorld.remove(gameObject.sprite)
+      this.stage.remove(gameObject.sprite)
     }
   }
+}
+
+function load (configuration) {
+  for (let component in Object.keys(configuration)) {
+    configuration[component] = new Component[component](configuration[component])
+  }
+}
+
+function create (configuration) {
+  return new GameObject(load(configuration))
 }

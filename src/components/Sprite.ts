@@ -16,6 +16,7 @@ export default class SpriteComponent {
       gameObject.transform.scale,
       gameObject.transform.rotation,
       new Vector2D(0, 0))
+
     gameObject.graphics.push(sprite)
   }
 }
