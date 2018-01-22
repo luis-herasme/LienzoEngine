@@ -1,14 +1,13 @@
+import { Vector } from '../../lienzo'
+import vec from '../../Vector/vectorFunctions'
+import Figure from './Figure'
 
-const Vector = require('vector_class')
-const vec = require('../../Vector/vectorFunctions')
-const Figure = require('./Figure')
-
-function Body (type, config) {
+export default function Body (type, config) {
   this.mass = config.mass ? config.mass : 1
   this.friction = config.friction ? config.friction : 1
   this.restitution = config.restitution ? config.restitution : 0.9
-  this.aceleration = config.aceleration ? new Vector(...config.aceleration) : new Vector(0, 0)
-  this.velocity = config.velocity ? new Vector(...config.velocity) : new Vector(0, 0)
+  this.aceleration = config.aceleration ? new Vector(config.aceleration[0], config.aceleration[1]) : new Vector(0, 0)
+  this.velocity = config.velocity ? new Vector(config.velocity[0], config.velocity[1]) : new Vector(0, 0)
   this.collision = config.collision
   this.name = config.name
   this.type = type
@@ -68,5 +67,3 @@ function Body (type, config) {
 
   return this
 }
-
-module.exports = Body

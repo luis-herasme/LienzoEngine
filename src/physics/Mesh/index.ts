@@ -1,5 +1,5 @@
 
-const Body = require('./Body.js')
-const Engine = require('./Engine.js')
+import Body   from './Body'
+import Engine from './Engine'
 
 export default { Body, Engine }

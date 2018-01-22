@@ -1,5 +1,5 @@
 
-import id from '../utils/id.js'
+import id from '../utils/id'
 
 export default class Identifier {
   public tags : Array<string>

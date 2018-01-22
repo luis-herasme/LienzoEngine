@@ -8,7 +8,7 @@ class DynamicRect extends DynamicBody {
   public type     : string
   public collides : Function
 
-  constructor (position, size, restitution = 1, collides) {
+  constructor (position, size, restitution = 1, collides?) {
     super(position, restitution)
 
     this.collides = collides

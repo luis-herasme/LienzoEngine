@@ -1,23 +1,20 @@
 
-import Vector from '../../Vector/Vector2D'
+import Vector         from '../../Vector/Vector2D'
+import DynamicCircle  from './Dynamic/DynamicCircle'
+import DynamicBox     from './Dynamic/DynamicBox'
+import DynamicRect    from './Dynamic/DynamicRect'
+import StaticCircle   from './Static/StaticCircle'
+import StaticBox      from './Static/StaticBox'
+import StaticRect     from './Static/StaticRect'
+import World          from './World/World'
 
-import DynamicCircle from './Dynamic/DynamicCircle'
-import DynamicBox from './Dynamic/DynamicBox'
-import DynamicRect from './Dynamic/DynamicRect'
-
-import StaticCircle from './Static/StaticCircle'
-import StaticBox from './Static/StaticBox'
-import StaticRect from './Static/StaticRect'
-
-import World from './World/World'
-
-function dynamicBody (shape, size, position) {
+function dynamicBody (shape, size, position, restitution?) {
   if (shape === 'circle') {
-    return new DynamicCircle(position, size)
+    return new DynamicCircle(position, size, restitution)
   } else if (shape === 'box') {
     return new DynamicBox(position, size)
   } else if (shape === 'rect') {
-    return new DynamicRect(position, size)
+    return new DynamicRect(position, size, restitution)
   } else {
     throw new Error('Type of body [' + shape + '] does not exist.')
   }

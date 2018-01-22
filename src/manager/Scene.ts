@@ -29,10 +29,11 @@ export default class Scene {
     this.stage.renderer = render
     this.stage.context = render.context
     this.stage.smoth(false)
-
+/*
     this.gui.renderer = render
     this.gui.context = render.context
     this.gui.smoth(false)
+*/
   }
 
   load (gameObject: Object): void {
@@ -56,11 +57,16 @@ export default class Scene {
     this.gameObjects.push(gameObject)  
   }
 
-  findByName (name) { // NOT WORKING
-    return this.gameObjects.find((gameObject) => {
-      if (gameObject.name === name) return gameObject
-      return false
-    })
+  findByName (name) {
+    let found = []
+    for (let gameObject of this.gameObjects) {
+      if (gameObject.Identifier) {
+        if (gameObject.Identifier.name === name) {
+          found.push(gameObject)
+        }
+      }
+    }
+    return found
   }
 
   update () {

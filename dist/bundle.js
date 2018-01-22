@@ -70,34 +70,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var lienzo_1 = __webpack_require__(14);
-// Prefabs
-var character_1 = __webpack_require__(31);
-var coins_1 = __webpack_require__(32);
-var grass_1 = __webpack_require__(33);
-var slime_1 = __webpack_require__(34);
-var clouds_1 = __webpack_require__(35);
-var background_1 = __webpack_require__(36);
-var manager = new lienzo_1.Manager({
-    system: 'Rect',
-    background: '#9FE6FF',
-    gravity: new lienzo_1.Vector(0, 500),
-    gameObjects: [character_1["default"], coins_1["default"], grass_1["default"], slime_1["default"], clouds_1["default"], background_1["default"]]
-});
-manager.start();
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -217,12 +194,367 @@ exports["default"] = Vector2D;
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var GameObject_1 = __webpack_require__(6);
+exports.GameObject = GameObject_1["default"];
+var Scene_1 = __webpack_require__(8);
+exports.Scene = Scene_1["default"];
+var Manager_1 = __webpack_require__(44);
+exports.Manager = Manager_1["default"];
+var Vector2D_1 = __webpack_require__(0);
+var Color_1 = __webpack_require__(16);
+exports.Color = Color_1["default"];
+var Graphic_1 = __webpack_require__(5);
+exports.Graphic = Graphic_1["default"];
+var number_1 = __webpack_require__(46);
+exports.number = number_1["default"];
+var Vector = Vector2D_1["default"];
+exports.Vector = Vector;
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+function id() {
+    var ID = '';
+    for (var i = 0; i < 10; i++) {
+        ID += Math.round(Math.random() * 100);
+    }
+    return ID;
+}
+exports.__esModule = true;
+exports["default"] = id;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var lienzo_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
+var DinamicBody = (function () {
+    function DinamicBody(position, restitution) {
+        if (position === void 0) { position = new Vector2D_1["default"](0, 0); }
+        if (restitution === void 0) { restitution = 1; }
+        this.restitution = restitution;
+        this.position = position;
+        this.velocity = new Vector2D_1["default"](0, 0);
+        this.acceleration = new Vector2D_1["default"](0, 0);
+        this.isDynamic = true;
+    }
+    DinamicBody.prototype.addForce = function (force) {
+        this.acceleration.add(force);
+    };
+    DinamicBody.prototype.momentum = function () {
+        return lienzo_1.Vector.mult(this.velocity, this.mass);
+    };
+    DinamicBody.prototype.inelasticCollision = function (other) {
+        var velocity1 = this.velocity;
+        var velocity2 = other.velocity;
+        var totalMomentum = other.momentum();
+        totalMomentum.add(this.momentum());
+        var totalMass = this.mass + other.mass;
+        // This velociry
+        this.velocity = lienzo_1.Vector.sub(velocity2, velocity1);
+        this.velocity.mult(this.restitution * other.mass);
+        this.velocity.add(totalMomentum);
+        this.velocity.div(totalMass);
+        // Other velociry
+        other.velocity = lienzo_1.Vector.sub(velocity1, velocity2);
+        other.velocity.mult(other.restitution * this.mass);
+        other.velocity.add(totalMomentum);
+        other.velocity.div(totalMass);
+    };
+    DinamicBody.prototype.update = function () {
+        this.acceleration.div(this.mass);
+        this.velocity.add(this.acceleration);
+        this.position.add(this.velocity);
+        this.acceleration.zero();
+    };
+    return DinamicBody;
+}());
+exports.__esModule = true;
+exports["default"] = DinamicBody;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * This function adds all the given vectors,
+ * this function can take multiple vectors and add them
+ * @param {Array} vector This is an array of components of a vector
+ * @example
+ * // returns [20, 20]
+ * add([5, 15], [15, 5])
+  * @example
+ * // returns [20, 20]
+ * add([5, 5], [10, 10], [5, 5])
+ */
+function add(v1, v2) {
+    return [v1[0] + v2[0], v1[1] + v2[1]];
+}
+/**
+ * This function subtracts all the given vectors
+ * @param {Array} Vector takes multiple vectors and subtracts them
+ */
+function sub(v1, v2) {
+    return [v1[0] - v2[0], v1[1] - v2[1]];
+}
+/**
+ * This function multiplies the vector given by the scalar give
+ * @param {Array} vector This is an array of components of a vector
+ * @param {Number} scalar This is a number
+ */
+function mult(vector, scalar) {
+    return vector.map(function (x) { return x * scalar; });
+}
+/**
+ * This function returns the inverse of the vector
+ * @param {array} vector This is an array of components of a vector
+ */
+function inverse(vector) {
+    return vector.map(function (x) { return x * -1; });
+}
+/**
+ * This function normalise the vector
+ * @param {array} vector This is an array of components of a vector
+ */
+function normalize(vector) {
+    var r = mag(vector);
+    if (isNaN(r) || r === 0)
+        r = 1;
+    return vector.map(function (x) { return x / r; });
+}
+/**
+ * Returns the magnitude of the distance between the two vectors given
+ * @param {array} vector1 This is an array of components of a vector
+ * @param {array} vector2 This is an array of components of a vector
+ */
+function distance(vector1, vector2) {
+    return mag(sub(vector1, vector2));
+}
+/**
+ * Returns a copy of the given vector
+ * @param {array} vector This is an array of components of a vector
+ */
+function copy(vector) {
+    return vector.slice();
+}
+/**
+ * Limits the magnitud of the given vector
+ * @param {array} vector This is an array of components of a vector
+ * @param {array} scalar This is the maximun length of the vector
+ */
+function limit(vector, scalar) {
+    if (mag(vector) > scalar)
+        return setMag(vector, scalar);
+    return vector;
+}
+/**
+ * This function returns the dot product of the two vectors given
+ * @param {array} vector1 This is an array of components of a vector
+ * @param {array} vector2 This is an array of components of a vector
+ */
+function dot(vector1, vector2) {
+    var ret = 0;
+    for (var i = 0; i < vector1.length; i++) {
+        ret += vector1[i] * vector2[i];
+    }
+    return ret;
+}
+/**
+ * This functions returns the margnitud of the given vector
+ * @param {array} vector This is an array of components of a vector
+ */
+function mag(vector) {
+    return Math.sqrt(dot(vector, vector));
+}
+/**
+ * Moves the first vector given to the second vector given
+ * with the given speed and wont move if the magnitude of the distance is
+ * smaller than the stop parameter.
+ * @param {array} start This is an array of components of a vector
+ * @param {array} end This is an array of components of a vector
+ * @param {number} speed This is the speed in wich the first vector will move towards the second
+ * @param {number} stop This is the distance in wich the start vector will not move to the end vector
+ */
+function moveTowards(start, end, speed, stop) {
+    if (speed === void 0) { speed = 1; }
+    if (stop === void 0) { stop = 1; }
+    var distance = sub(end, start);
+    if (mag(distance) > stop) {
+        distance = normalize(distance);
+        distance = mult(distance, speed);
+        return add(start, distance);
+    }
+    return start;
+}
+/**
+ * Returns the angle between 2 vectors
+ * @param {array} vector1 This is an array of components of a vector
+ * @param {array} vector2 This is an array of components of a vector
+ */
+function angleBetween(vector1, vector2) {
+    return Math.acos((dot(vector1, vector2)) / (mag(vector1) * mag(vector2)));
+}
+/**
+ * Sets the magnitud of the vector to the length of the scalar given
+ * @param {array} vector This is an array of components of a vector
+ * @param {number} scalar This will be the length of the vector
+ */
+function setMag(vector, scalar) {
+    return mult(normalize(vector), scalar);
+}
+/**
+ * Converts a number from radian to degree
+ * @param {number} radian This number represents the radian that you want to convert
+ */
+function toDegree(radian) {
+    return radian * (180 / Math.PI);
+}
+/**
+ * Converts a number from degree to radian
+ * @param {number} degree This number represents the degree that you want to convert
+ */
+function toRadian(degree) {
+    return degree * (Math.PI / 180);
+}
+/**
+ * Returns the cross product of 2 vectors with 3 components
+ * @param {array} vector1 This is an array of components of a vector
+ * @param {array} vector2 This is an array of components of a vector
+ */
+function cross3d(vec1, vec2) {
+    var vecR = [];
+    vecR[0] = (vec1[1] * vec2[2]) - (vec1[2] * vec2[1]);
+    vecR[1] = (vec1[2] * vec2[0]) - (vec1[0] * vec2[2]);
+    vecR[2] = (vec1[0] * vec2[1]) - (vec1[1] * vec2[0]);
+    return vecR;
+}
+/**
+ * Returns the cross product of 2 vectors with 2 components
+ * @param {array} vector1 This is an array of components of a vector
+ * @param {array} vector2 This is an array of components of a vector
+ */
+function cross2d(vector1, vector2) {
+    return vector1[0] * vector2[1] - vector1[1] * vector2[0];
+}
+/**
+ * Returns the angle of the vector
+ * @param {array} vector This is an array of components of a vector
+ */
+function angle(vector) {
+    var result = Math.atan2(vector[1], vector[0]);
+    return result;
+}
+/**
+ * Creates a vector from a magnitud and a direction
+ * @param {number} direction This is the direction of the vector that will be created
+ * @param {number} magnitud This is the magnitud of the vector that will be created
+ */
+function angleMagnitude(direction, magnitud) {
+    if (magnitud < 0)
+        return inverse(setAngle([0, magnitud], direction));
+    return setAngle([0, magnitud], direction);
+}
+/**
+ * Sets the angle of the given vector to the given angle
+ * @param {array} vector This is the vector that will be changed
+ * @param {number} angle This will be the angle of the given vector in radians
+ */
+function linearIntersect(a, b, c, d) {
+    var r = sub(b, a);
+    var s = sub(d, c);
+    var d1 = cross2d(r, s);
+    var u = cross2d(sub(c, a), r) / d1;
+    var t = cross2d(sub(c, a), s) / d1;
+    if (!((u < 1 && u > 0) && (t < 1 && t > 0))) {
+        u = 1;
+        t = 1;
+    }
+    return [u, t];
+}
+/**
+ * Adds the angle of the given vector to the given angle
+ * @param {array} vector This is the vector that will be changed
+ * @param {number} angle This will be the angle that will be added to the given vector in radians
+ * @param {array} piv This is the center of rotation
+ */
+function addAngle(vec, ang, piv) {
+    if (piv === void 0) { piv = [0, 0]; }
+    var s = Math.sin(ang);
+    var c = Math.cos(ang);
+    var vecR = sub(vec, piv);
+    var xnew = vecR[0] * c - vecR[1] * s;
+    var ynew = vecR[0] * s + vecR[1] * c;
+    vecR = add([xnew, ynew], piv);
+    return vecR;
+}
+/**
+ * Sets the angle of the given vector to the given angle
+ * @param {array} vector This is the vector that will be changed
+ * @param {number} angle This will be the angle of the given vector in radians
+ */
+function setAngle(vec, ang) {
+    var r = mag(vec);
+    return [r * Math.cos(ang), r * Math.sin(ang)];
+}
+/**
+ * Takes as a parameter a list of vectors and returns the center point or the average of the vector
+ * @param {array} vectorList This is the vector list
+ */
+function average(vectorList) {
+    var vec = vectorList.reduce(function (a, c) { return add(a, c); }, [0, 0]);
+    return mult(vec, 1 / vectorList.length);
+}
+exports.__esModule = true;
+exports["default"] = {
+    add: add,
+    average: average,
+    sub: sub,
+    mult: mult,
+    mag: mag,
+    dot: dot,
+    inverse: inverse,
+    cross3d: cross3d,
+    cross2d: cross2d,
+    linearIntersect: linearIntersect,
+    angleMagnitude: angleMagnitude,
+    normalize: normalize,
+    setMag: setMag,
+    angle: angle,
+    addAngle: addAngle,
+    distance: distance,
+    copy: copy,
+    moveTowards: moveTowards,
+    limit: limit,
+    angleBetween: angleBetween,
+    toDegree: toDegree,
+    toRadian: toRadian,
+    setAngle: setAngle
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
 var Graphic = (function () {
     function Graphic(renderFunction, position, scale, rotation) {
         if (position === void 0) { position = new Vector2D_1["default"](1, 1); }
@@ -323,14 +655,16 @@ exports["default"] = Graphic;
 
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Script_1 = __webpack_require__(4);
+var Script_1 = __webpack_require__(7);
+var id_1 = __webpack_require__(2);
 var GameObject = (function () {
     function GameObject(components) {
+        this.id = id_1["default"]();
         this.scripts = new Script_1["default"](this);
         this.graphics = [];
         for (var component in Object.keys(components)) {
@@ -370,7 +704,7 @@ exports["default"] = GameObject;
 
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -410,15 +744,15 @@ exports["default"] = ScriptManager;
 
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var index_1 = __webpack_require__(6);
-var Dibujo = __webpack_require__(10);
-var GameObject_1 = __webpack_require__(3);
-var Component = __webpack_require__(24);
+var index_1 = __webpack_require__(9);
+var Dibujo = __webpack_require__(13);
+var GameObject_1 = __webpack_require__(6);
+var Component = __webpack_require__(39);
 var Scene = (function () {
     function Scene(config) {
         this.stage = new Dibujo.Scene();
@@ -439,9 +773,11 @@ var Scene = (function () {
         this.stage.renderer = render;
         this.stage.context = render.context;
         this.stage.smoth(false);
-        this.gui.renderer = render;
-        this.gui.context = render.context;
-        this.gui.smoth(false);
+        /*
+            this.gui.renderer = render
+            this.gui.context = render.context
+            this.gui.smoth(false)
+        */
     };
     Scene.prototype.load = function (gameObject) {
         this.add(create(load(gameObject)));
@@ -460,11 +796,16 @@ var Scene = (function () {
         this.gameObjects.push(gameObject);
     };
     Scene.prototype.findByName = function (name) {
-        return this.gameObjects.find(function (gameObject) {
-            if (gameObject.name === name)
-                return gameObject;
-            return false;
-        });
+        var found = [];
+        for (var _i = 0, _a = this.gameObjects; _i < _a.length; _i++) {
+            var gameObject = _a[_i];
+            if (gameObject.Identifier) {
+                if (gameObject.Identifier.name === name) {
+                    found.push(gameObject);
+                }
+            }
+        }
+        return found;
     };
     Scene.prototype.update = function () {
         this.stage.clear(this.background);
@@ -515,23 +856,23 @@ function create(configuration) {
 
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Circle = __webpack_require__(15);
+var Circle = __webpack_require__(18);
 exports.Circle = Circle;
-var Rect = __webpack_require__(18);
+var Rect = __webpack_require__(21);
 exports.Rect = Rect;
-var RectCircle = __webpack_require__(38);
+var RectCircle = __webpack_require__(24);
 exports.RectCircle = RectCircle;
-var Mesh = __webpack_require__(46);
+var Mesh = __webpack_require__(32);
 exports.Mesh = Mesh;
 
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -541,7 +882,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Circle_1 = __webpack_require__(16);
+var Circle_1 = __webpack_require__(19);
 var Collider = (function (_super) {
     __extends(Collider, _super);
     function Collider() {
@@ -554,12 +895,12 @@ exports["default"] = Collider;
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var World = (function () {
     function World(gravity) {
         this.maxPositionX = window.innerWidth;
@@ -712,7 +1053,7 @@ exports["default"] = World;
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -722,7 +1063,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Rect_1 = __webpack_require__(19);
+var Rect_1 = __webpack_require__(22);
 var Collider = (function (_super) {
     __extends(Collider, _super);
     function Collider() {
@@ -746,34 +1087,34 @@ exports["default"] = Collider;
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Scene_1 = __webpack_require__(11);
+var Scene_1 = __webpack_require__(14);
 exports.Scene = Scene_1["default"];
-var Render_1 = __webpack_require__(21);
+var Render_1 = __webpack_require__(36);
 exports.Render = Render_1["default"];
-var Sprite_1 = __webpack_require__(12);
+var Sprite_1 = __webpack_require__(15);
 exports.Sprite = Sprite_1["default"];
-var Graphic_1 = __webpack_require__(2);
+var Graphic_1 = __webpack_require__(5);
 exports.Graphic = Graphic_1["default"];
-var gObject_1 = __webpack_require__(22);
+var gObject_1 = __webpack_require__(37);
 exports.gObject = gObject_1["default"];
-var Animation_1 = __webpack_require__(23);
+var Animation_1 = __webpack_require__(38);
 exports.Animation = Animation_1["default"];
-var Color_1 = __webpack_require__(13);
+var Color_1 = __webpack_require__(16);
 exports.Color = Color_1["default"];
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var Scene = (function () {
     function Scene() {
         this.following = false;
@@ -827,13 +1168,13 @@ exports["default"] = Scene;
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* global Image */
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var Sprite = (function () {
     function Sprite(src, position, scale, rotation, anchor) {
         if (position === void 0) { position = new Vector2D_1["default"](1, 1); }
@@ -869,7 +1210,7 @@ exports["default"] = Sprite;
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -950,58 +1291,58 @@ exports["default"] = Color;
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var GameObject_1 = __webpack_require__(3);
-exports.GameObject = GameObject_1["default"];
-var Scene_1 = __webpack_require__(5);
-exports.Scene = Scene_1["default"];
-var Manager_1 = __webpack_require__(29);
-exports.Manager = Manager_1["default"];
-var Vector2D_1 = __webpack_require__(1);
-var Color_1 = __webpack_require__(13);
-exports.Color = Color_1["default"];
-var Graphic_1 = __webpack_require__(2);
-exports.Graphic = Graphic_1["default"];
-var number_1 = __webpack_require__(51);
-exports.number = number_1["default"];
-var Vector = Vector2D_1["default"];
-exports.Vector = Vector;
+var lienzo_1 = __webpack_require__(1);
+// Prefabs
+var character_1 = __webpack_require__(47);
+var coins_1 = __webpack_require__(48);
+var grass_1 = __webpack_require__(49);
+var slime_1 = __webpack_require__(50);
+var clouds_1 = __webpack_require__(51);
+var background_1 = __webpack_require__(52);
+var manager = new lienzo_1.Manager({
+    system: 'Rect',
+    background: '#9FE6FF',
+    gravity: new lienzo_1.Vector(0, 500),
+    gameObjects: [character_1["default"], coins_1["default"], grass_1["default"], slime_1["default"], clouds_1["default"], background_1["default"]]
+});
+manager.start();
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Collider_1 = __webpack_require__(7);
+var Collider_1 = __webpack_require__(10);
 exports.Collider = Collider_1["default"];
-var Dynamic_1 = __webpack_require__(17);
+var Dynamic_1 = __webpack_require__(20);
 exports.Dynamic = Dynamic_1["default"];
 // import Trigger from './Trigger'
-var World_1 = __webpack_require__(8);
+var World_1 = __webpack_require__(11);
 exports.World = World_1["default"];
 
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
-var id_js_1 = __webpack_require__(52);
+var Vector2D_1 = __webpack_require__(0);
+var id_1 = __webpack_require__(2);
 var Circle = (function () {
     function Circle(position, radius) {
         this.position = new Vector2D_1["default"](0, 0);
         this.radius = 5;
         this.position = position;
         this.radius = radius;
-        this.id = id_js_1["default"]();
+        this.id = id_1["default"]();
     }
     return Circle;
 }());
@@ -1010,7 +1351,7 @@ exports["default"] = Circle;
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1020,8 +1361,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Vector2D_1 = __webpack_require__(1);
-var Collider_1 = __webpack_require__(7);
+var Vector2D_1 = __webpack_require__(0);
+var Collider_1 = __webpack_require__(10);
 var Dynamic = (function (_super) {
     __extends(Dynamic, _super);
     function Dynamic(config) {
@@ -1074,26 +1415,26 @@ exports["default"] = Dynamic;
 
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var World_1 = __webpack_require__(8);
+var World_1 = __webpack_require__(11);
 exports.World = World_1["default"];
-var Collider_1 = __webpack_require__(9);
+var Collider_1 = __webpack_require__(12);
 exports.Collider = Collider_1["default"];
-var Dynamic_1 = __webpack_require__(20);
+var Dynamic_1 = __webpack_require__(23);
 exports.Dynamic = Dynamic_1["default"];
 
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 function id() {
     var ID = '';
     for (var i = 0; i < 10; i++) {
@@ -1116,7 +1457,7 @@ exports["default"] = Rect;
 
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1126,8 +1467,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Vector2D_1 = __webpack_require__(1);
-var Collider_1 = __webpack_require__(9);
+var Vector2D_1 = __webpack_require__(0);
+var Collider_1 = __webpack_require__(12);
 var Vector = Vector2D_1["default"];
 var Dynamic = (function (_super) {
     __extends(Dynamic, _super);
@@ -1182,13 +1523,608 @@ exports["default"] = Dynamic;
 
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
-var Scene_1 = __webpack_require__(11);
+var DynamicCircle_1 = __webpack_require__(25);
+var DynamicBox_1 = __webpack_require__(26);
+var DynamicRect_1 = __webpack_require__(27);
+var StaticCircle_1 = __webpack_require__(28);
+var StaticBox_1 = __webpack_require__(29);
+var StaticRect_1 = __webpack_require__(30);
+var World_1 = __webpack_require__(31);
+exports.World = World_1["default"];
+function dynamicBody(shape, size, position, restitution) {
+    if (shape === 'circle') {
+        return new DynamicCircle_1["default"](position, size, restitution);
+    }
+    else if (shape === 'box') {
+        return new DynamicBox_1["default"](position, size);
+    }
+    else if (shape === 'rect') {
+        return new DynamicRect_1["default"](position, size, restitution);
+    }
+    else {
+        throw new Error('Type of body [' + shape + '] does not exist.');
+    }
+}
+function staticBody(shape, size, position) {
+    if (shape === 'circle') {
+        return new StaticCircle_1["default"](position, size);
+    }
+    else if (shape === 'box') {
+        return new StaticBox_1["default"](position, size);
+    }
+    else if (shape === 'rect') {
+        return new StaticRect_1["default"](position, size);
+    }
+    else {
+        throw new Error('Type of body [' + shape + '] does not exist.');
+    }
+}
+function body(type, shape, size, position, onCollision) {
+    var collider;
+    if (type === 'static') {
+        collider = staticBody(shape, size, position);
+    }
+    else if (type === 'dynamic') {
+        collider = dynamicBody(shape, size, position);
+    }
+    else {
+        throw new Error('Type [' + type + '] does not exist. dynamic or static');
+    }
+    if (onCollision) {
+        collider.coliciona = onCollision.bind(this);
+    }
+    else {
+        collider.coliciona = function () { };
+    }
+    return collider;
+}
+exports.body = body;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Vector2D_1 = __webpack_require__(0);
+var DynamicBody_1 = __webpack_require__(3);
+var DynamicCircle = (function (_super) {
+    __extends(DynamicCircle, _super);
+    function DynamicCircle(position, radius, restitution) {
+        var _this = _super.call(this, position, restitution) || this;
+        _this.radius = radius;
+        _this.mass = Math.PI * Math.pow(_this.radius, 2);
+        _this.type = 'circle';
+        return _this;
+    }
+    DynamicCircle.prototype.circleCollision = function (other) {
+        var distance = Vector2D_1["default"].sub(this.position, other.position);
+        if (distance.mag() < this.radius + other.radius && distance.mag()) {
+            var direction = Vector2D_1["default"].normalize(distance);
+            direction.mult(this.radius + other.radius);
+            direction.sub(distance);
+            this.position.add(direction);
+            if (other.isDynamic) {
+                this.inelasticCollision(other);
+            }
+            else {
+                this.velocity.inverse();
+            }
+            this.collides(other);
+        }
+    };
+    DynamicCircle.prototype.rectCollision = function (rect) {
+        var distX = Math.abs(this.position.x - rect.position.x - rect.size.x / 2);
+        var distY = Math.abs(this.position.y - rect.position.y - rect.size.y / 2);
+        if (distX > (rect.size.x / 2 + this.radius))
+            return false;
+        if (distY > (rect.size.y / 2 + this.radius))
+            return false;
+        if (distX <= (rect.size.x / 2)) {
+            this.velocity.y *= -1;
+            this.collides(rect);
+        }
+        if (distY <= (rect.size.y / 2)) {
+            this.velocity.x *= -1;
+            this.collides(rect);
+        }
+        var dx = distX - rect.size.x / 2;
+        var dy = distY - rect.size.y / 2;
+        if (dx * dx + dy * dy <= (this.radius * this.radius)) {
+            this.velocity.addAngle(90);
+            this.collides(rect);
+        }
+    };
+    return DynamicCircle;
+}(DynamicBody_1["default"]));
+exports.__esModule = true;
+exports["default"] = DynamicCircle;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var DynamicBody_1 = __webpack_require__(3);
+var DynamicBox = (function (_super) {
+    __extends(DynamicBox, _super);
+    function DynamicBox(position, side, restitution) {
+        if (restitution === void 0) { restitution = 1; }
+        var _this = _super.call(this, position, restitution) || this;
+        _this.side = side;
+        _this.mass = Math.pow(_this.side, 2);
+        _this.type = 'box';
+        return _this;
+    }
+    return DynamicBox;
+}(DynamicBody_1["default"]));
+exports.__esModule = true;
+exports["default"] = DynamicBox;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var DynamicBody_1 = __webpack_require__(3);
+var DynamicRect = (function (_super) {
+    __extends(DynamicRect, _super);
+    function DynamicRect(position, size, restitution, collides) {
+        if (restitution === void 0) { restitution = 1; }
+        var _this = _super.call(this, position, restitution) || this;
+        _this.collides = collides;
+        _this.size = size;
+        _this.mass = size.x * size.y;
+        _this.type = 'rect';
+        return _this;
+    }
+    DynamicRect.prototype.circleCollision = function (circle) {
+        var distX = Math.abs(circle.position.x - this.position.x - this.size.x / 2);
+        var distY = Math.abs(circle.position.y - this.position.y - this.size.y / 2);
+        if (distX > (this.size.x / 2 + circle.radius))
+            return false;
+        if (distY > (this.size.y / 2 + circle.radius))
+            return false;
+        if (distX <= (this.size.x / 2)) {
+            circle.velocity.y *= -1;
+            this.collides(this);
+        }
+        if (distY <= (this.size.y / 2)) {
+            circle.velocity.x *= -1;
+            this.collides(circle);
+        }
+        var dx = distX - this.size.x / 2;
+        var dy = distY - this.size.y / 2;
+        if (dx * dx + dy * dy <= (circle.radius * circle.radius)) {
+            circle.velocity.addAngle(90);
+            this.collides(circle);
+        }
+    };
+    DynamicRect.prototype.rectCollision = function (rect) {
+    };
+    return DynamicRect;
+}(DynamicBody_1["default"]));
+exports.__esModule = true;
+exports["default"] = DynamicRect;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
+var StaticCircle = (function () {
+    function StaticCircle(position, radius) {
+        if (position === void 0) { position = new Vector2D_1["default"](0, 0); }
+        if (radius === void 0) { radius = 5; }
+        this.position = position;
+        this.radius = radius;
+        this.type = 'circle';
+    }
+    return StaticCircle;
+}());
+exports.__esModule = true;
+exports["default"] = StaticCircle;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
+var StaticBox = (function () {
+    function StaticBox(position, side) {
+        if (position === void 0) { position = new Vector2D_1["default"](0, 0); }
+        if (side === void 0) { side = 5; }
+        this.position = position;
+        this.side = side;
+        this.type = 'box';
+    }
+    return StaticBox;
+}());
+exports.__esModule = true;
+exports["default"] = StaticBox;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
+var StaticRect = (function () {
+    function StaticRect(position, size) {
+        if (position === void 0) { position = new Vector2D_1["default"](0, 0); }
+        if (size === void 0) { size = new Vector2D_1["default"](5, 5); }
+        this.position = position;
+        this.size = size;
+        this.type = 'rect';
+    }
+    return StaticRect;
+}());
+exports.__esModule = true;
+exports["default"] = StaticRect;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var World = (function () {
+    function World(x, y) {
+        this.x = x;
+        this.y = y;
+        this.dynamicParticles = [];
+        this.circleParticles = [];
+        this.rectParticles = [];
+        this.maxPositionX = window.innerWidth;
+        this.minPositionX = 0;
+        this.maxPositionY = window.innerHeight;
+        this.minPositionY = 0;
+    }
+    World.prototype.add = function (particle) {
+        if (particle.type === 'circle') {
+            this.circleParticles.push(particle);
+        }
+        else if (particle.type === 'rect') {
+            this.rectParticles.push(particle);
+        }
+        if (particle.isDynamic) {
+            this.dynamicParticles.push(particle);
+        }
+    };
+    World.prototype.remove = function (particle) {
+        if (particle.type === 'circle') {
+            this.circleParticles.splice(this.circleParticles.indexOf(particle), 1);
+        }
+        else if (particle.type === 'rect') {
+            this.rectParticles.splice(this.rectParticles.indexOf(particle), 1);
+        }
+        if (particle.isDynamic) {
+            this.dynamicParticles.splice(this.dynamicParticles.indexOf(particle), 1);
+        }
+    };
+    World.prototype.update = function () {
+        var _this = this;
+        this.dynamicParticles.forEach(function (particle) {
+            _this.insideWorldBounds(particle);
+            particle.update();
+            _this.circleParticles.forEach(function (circle) {
+                particle.circleCollision(circle);
+            });
+            _this.rectParticles.forEach(function (rect) {
+                particle.rectCollision(rect);
+            });
+        });
+    };
+    World.prototype.insideWorldBounds = function (particle) {
+        // Horizontal bounds
+        if (particle.position.x + particle.radius > this.maxPositionX) {
+            particle.position.x = this.maxPositionX - particle.radius;
+            particle.velocity.x *= -1;
+        }
+        else if (particle.position.x - particle.radius < this.minPositionX) {
+            particle.position.x = this.minPositionX + particle.radius;
+            particle.velocity.x *= -1;
+        }
+        // Vectical bounds
+        if (particle.position.y + particle.radius > this.maxPositionY) {
+            particle.position.y = this.maxPositionY - particle.radius;
+            particle.velocity.y *= -1;
+        }
+        else if (particle.position.y - particle.radius < this.minPositionY) {
+            particle.position.y = this.minPositionY + particle.radius;
+            particle.velocity.y *= -1;
+        }
+    };
+    return World;
+}());
+exports.__esModule = true;
+exports["default"] = World;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Body_1 = __webpack_require__(33);
+var Engine_1 = __webpack_require__(35);
+exports.__esModule = true;
+exports["default"] = { Body: Body_1["default"], Engine: Engine_1["default"] };
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var lienzo_1 = __webpack_require__(1);
+var vectorFunctions_1 = __webpack_require__(4);
+var Figure_1 = __webpack_require__(34);
+function Body(type, config) {
+    var _this = this;
+    this.mass = config.mass ? config.mass : 1;
+    this.friction = config.friction ? config.friction : 1;
+    this.restitution = config.restitution ? config.restitution : 0.9;
+    this.aceleration = config.aceleration ? new lienzo_1.Vector(config.aceleration[0], config.aceleration[1]) : new lienzo_1.Vector(0, 0);
+    this.velocity = config.velocity ? new lienzo_1.Vector(config.velocity[0], config.velocity[1]) : new lienzo_1.Vector(0, 0);
+    this.collision = config.collision;
+    this.name = config.name;
+    this.type = type;
+    if (type !== 'Circle') {
+        this.update = function () {
+            _this.velocity.add(_this.aceleration);
+            _this.vertices.translate(_this.velocity);
+            _this.velocity.mult(_this.friction);
+            _this.center = _this.vertices.center();
+            _this.aceleration.mult(0);
+            _this.far = _this.vertices.far(_this.center);
+        };
+    }
+    else {
+        this.update = function () {
+            _this.velocity.add(_this.aceleration);
+            _this.center = vectorFunctions_1["default"].add(_this.center, _this.velocity.value);
+            _this.velocity.mult(_this.friction);
+            _this.aceleration.mult(0);
+        };
+    }
+    this.addForce = function (force) {
+        force.mult(1 / _this.mass);
+        _this.aceleration.add(force);
+    };
+    if (type === 'Circle') {
+        this.center = config.position;
+        this.far = config.radius;
+    }
+    else {
+        this.vertices = new Figure_1["default"]();
+        if (type === 'Mesh') {
+            config.vertices.forEach(function (vertex) { return _this.vertices.add(vertex); });
+        }
+        else if (type === 'Box') {
+            var pointY = vectorFunctions_1["default"].add(config.position, [0, config.side]);
+            var pointX = vectorFunctions_1["default"].add(config.position, [config.side, 0]);
+            var pointXY = vectorFunctions_1["default"].add(config.position, [config.side, config.side]);
+            this.vertices.add(config.position);
+            this.vertices.add(pointX);
+            this.vertices.add(pointXY);
+            this.vertices.add(pointY);
+        }
+        else if (type === 'Rect') {
+            var pointY = vectorFunctions_1["default"].add(config.position, [0, config.height]);
+            var pointX = vectorFunctions_1["default"].add(config.position, [config.width, 0]);
+            var pointXY = vectorFunctions_1["default"].add(config.position, [config.width, config.height]);
+            this.vertices.add(config.position);
+            this.vertices.add(pointX);
+            this.vertices.add(pointXY);
+            this.vertices.add(pointY);
+        }
+        this.center = this.vertices.center();
+        this.far = this.vertices.far(this.center);
+    }
+    return this;
+}
+exports.__esModule = true;
+exports["default"] = Body;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var vectorFunctions_1 = __webpack_require__(4);
+var Figure = (function () {
+    function Figure() {
+        this.points = [];
+        this.rotation = 0;
+    }
+    Figure.prototype.add = function (point) {
+        this.points.push(point);
+    };
+    Figure.prototype.translate = function (vec) {
+        this.points = this.points.map(function (x) { return vectorFunctions_1["default"].add(x, vec); });
+    };
+    Figure.prototype.rotate = function (rotation) {
+        var _this = this;
+        this.points = this.points.map(function (x) { return vectorFunctions_1["default"].setAngle(x, _this.rotation + rotation); });
+    };
+    Figure.prototype.scale = function (vec) {
+        this.points = this.points.map(function (x) { return vectorFunctions_1["default"].mult(x, vec); });
+    };
+    Figure.prototype.center = function () {
+        vectorFunctions_1["default"].average(this.points);
+    };
+    Figure.prototype.far = function (center) {
+        return vectorFunctions_1["default"].mag(this.points.reduce(function (a, c) {
+            if (vectorFunctions_1["default"].distance(a, center) > vectorFunctions_1["default"].distance(c, center))
+                return a;
+            else
+                return c;
+        }));
+    };
+    return Figure;
+}());
+exports.__esModule = true;
+exports["default"] = Figure;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var vectorFunctions_1 = __webpack_require__(4);
+function meshIntersect(mesh, mesh2) {
+    mesh.vertices.points.forEach(function (vertex, index) {
+        mesh2.vertices.points.forEach(function (vertex2, index2) {
+            var end;
+            if (index !== mesh.vertices.points.length - 1) {
+                end = mesh.vertices.points[index + 1];
+            }
+            else
+                end = mesh.vertices.points[0];
+            var end2;
+            if (index2 !== mesh2.vertices.points.length - 1) {
+                end2 = mesh2.vertices.points[index2 + 1];
+            }
+            else
+                end2 = mesh2.vertices.points[0];
+            var i = vectorFunctions_1["default"].linearIntersect(vertex, end, vertex2, end2);
+            if (i[0] !== 1 && i[1] !== 1) {
+                collision(mesh, mesh2);
+            }
+        });
+    });
+}
+function circleIntersect(circle, _circle) {
+    if (vectorFunctions_1["default"].distance(circle.center, _circle.center) < circle.far + _circle.far) {
+        collision(circle, _circle);
+    }
+}
+function meshCircleIntersect(mesh, circle) {
+    mesh.vertices.points.forEach(function (vertex) {
+        if (vectorFunctions_1["default"].distance(vertex, circle.center) < circle.far)
+            collision(mesh, circle);
+    });
+}
+function collision(body, _body) {
+    if (body.collision)
+        body.collision(body, _body);
+    if (_body.collision)
+        _body.collision(_body, body);
+}
+var idCounter = 0;
+function Engine() {
+    var _this = this;
+    this.bodies = [];
+    this.add = function (body) {
+        body.id = idCounter++;
+        _this.bodies.push(body);
+    };
+    this.destroy = function (body) {
+        _this.bodies = _this.bodies.filter(function (b) {
+            return b.id !== body.id;
+        });
+    };
+    this.setBounds = function (bounds) {
+        _this.bounds = bounds;
+    };
+    this.removeBounds = function () {
+        _this.bounds = false;
+    };
+    this.update = function () {
+        _this.bodies.forEach(function (body, index) {
+            body.update();
+            if (_this.bounds) {
+                if (body.center[0] <= _this.bounds[0]) {
+                    body.center[0] = _this.bounds[0];
+                    body.velocity.mult(body.restitution);
+                    body.velocity.value[0] *= -1;
+                }
+                else if (body.center[0] >= _this.bounds[1]) {
+                    body.center[0] = _this.bounds[1];
+                    body.velocity.mult(body.restitution);
+                    body.velocity.value[0] *= -1;
+                }
+                if (body.center[1] <= _this.bounds[2]) {
+                    body.center[1] = _this.bounds[2];
+                    body.velocity.mult(body.restitution);
+                    body.velocity.value[1] *= -1;
+                }
+                else if (body.center[1] >= _this.bounds[3]) {
+                    body.center[1] = _this.bounds[3];
+                    body.velocity.mult(body.restitution);
+                    body.velocity.value[1] *= -1;
+                }
+            }
+            _this.bodies.forEach(function (body2, index2) {
+                if (index !== index2) {
+                    if (vectorFunctions_1["default"].distance(body.center, body2.center) < body.far + body2.far) {
+                        if (body.type !== 'Circle' && body2.type !== 'Circle')
+                            meshIntersect(body, body2);
+                        else if (body.type !== 'Circle' && body2.type === 'Circle')
+                            meshCircleIntersect(body, body2);
+                        else if (body.type === 'Circle' && body2.type !== 'Circle')
+                            meshCircleIntersect(body2, body);
+                        else
+                            circleIntersect(body, body2);
+                    }
+                }
+            });
+        });
+    };
+}
+exports.__esModule = true;
+exports["default"] = Engine;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Vector2D_1 = __webpack_require__(0);
+var Scene_1 = __webpack_require__(14);
 var Render = (function () {
     function Render(canvasName, width, height) {
         var _this = this;
@@ -1237,12 +2173,12 @@ exports["default"] = Render;
 
 
 /***/ }),
-/* 22 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Graphic_1 = __webpack_require__(2);
+var Graphic_1 = __webpack_require__(5);
 var gObject = (function () {
     function gObject(data) {
         this.graphic = new Graphic_1["default"](this.render());
@@ -1262,12 +2198,12 @@ exports["default"] = gObject;
 
 
 /***/ }),
-/* 23 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var Animation = (function () {
     function Animation(src, scale, position, frameRate, size, loop) {
         if (scale === void 0) { scale = new Vector2D_1["default"](1, 1); }
@@ -1323,33 +2259,33 @@ exports["default"] = Animation;
 
 
 /***/ }),
-/* 24 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Identifier_1 = __webpack_require__(25);
+var Identifier_1 = __webpack_require__(40);
 exports.Identifier = Identifier_1["default"];
-var Transform_1 = __webpack_require__(26);
+var Transform_1 = __webpack_require__(41);
 exports.Transform = Transform_1["default"];
-var Sprite_1 = __webpack_require__(27);
+var Sprite_1 = __webpack_require__(42);
 exports.Sprite = Sprite_1["default"];
-var Script_1 = __webpack_require__(4);
+var Script_1 = __webpack_require__(7);
 exports.ScriptManager = Script_1["default"];
-var Collider_1 = __webpack_require__(28);
+var Collider_1 = __webpack_require__(43);
 exports.Collider = Collider_1["default"];
 
 
 /***/ }),
-/* 25 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var id_js_1 = __webpack_require__(52);
+var id_1 = __webpack_require__(2);
 var Identifier = (function () {
     function Identifier(name, tags) {
-        this.id = id_js_1["default"]();
+        this.id = id_1["default"]();
         this.name = name;
         this.tags = tags;
     }
@@ -1360,12 +2296,12 @@ exports["default"] = Identifier;
 
 
 /***/ }),
-/* 26 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 var Transform = (function () {
     function Transform(position, scale, rotation) {
         if (position === void 0) { position = new Vector2D_1["default"](0, 0); }
@@ -1397,13 +2333,13 @@ exports["default"] = Transform;
 
 
 /***/ }),
-/* 27 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Sprite_1 = __webpack_require__(12);
-var Vector2D_1 = __webpack_require__(1);
+var Sprite_1 = __webpack_require__(15);
+var Vector2D_1 = __webpack_require__(0);
 var SpriteComponent = (function () {
     function SpriteComponent(src) {
         this.src = src;
@@ -1419,13 +2355,13 @@ exports["default"] = SpriteComponent;
 
 
 /***/ }),
-/* 28 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
-var index_1 = __webpack_require__(6);
+var Vector2D_1 = __webpack_require__(0);
+var index_1 = __webpack_require__(9);
 var Collider = (function () {
     function Collider(configuration) {
         this.restitution = configuration.restitution;
@@ -1464,7 +2400,7 @@ exports["default"] = Collider;
 
 
 /***/ }),
-/* 29 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1474,18 +2410,20 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var events_1 = __webpack_require__(30);
-var Scene_1 = __webpack_require__(5);
-var index_1 = __webpack_require__(10);
+var events_1 = __webpack_require__(45);
+var Scene_1 = __webpack_require__(8);
+var index_1 = __webpack_require__(13);
 var Manager = (function (_super) {
     __extends(Manager, _super);
     function Manager(config, id, width, height) {
         var _this = _super.call(this, id, width, height) || this;
-        _this.setScene(new Scene_1["default"](config));
         events_1["default"](_this);
+        console.log(Scene_1["default"]);
+        _this.setScene(new Scene_1["default"](config));
         return _this;
     }
     Manager.prototype.setScene = function (scene) {
+        console.log(scene);
         this.gameScene = scene;
         this.gameScene.setRender(this);
     };
@@ -1512,12 +2450,12 @@ exports["default"] = Manager;
 
 
 /***/ }),
-/* 30 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Vector2D_1 = __webpack_require__(1);
+var Vector2D_1 = __webpack_require__(0);
 function initEvents(manager) {
     var keys = {};
     setInterval(function () {
@@ -1564,12 +2502,86 @@ exports["default"] = initEvents;
 
 
 /***/ }),
-/* 31 */
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function getNumber(number) {
+    return number * Math.random() * symbol();
+}
+function symbol(probability) {
+    if (probability === void 0) { probability = 0.5; }
+    if (Math.random() < probability) {
+        return -1;
+    }
+    else {
+        return 1;
+    }
+}
+function random(finish, start) {
+    if (finish === void 0) { finish = 1; }
+    if (start === void 0) { start = 0; }
+    return (Math.random() * (finish - start)) + start;
+}
+function randomList(len, finish, start) {
+    if (len === void 0) { len = 2; }
+    if (finish === void 0) { finish = 1; }
+    if (start === void 0) { start = 0; }
+    var list = [];
+    for (var i = 0; i < len; i++) {
+        list.push(random(finish, start));
+    }
+    return list;
+}
+function randomMatrix(finish, start, width, heigth) {
+    if (finish === void 0) { finish = 1; }
+    if (start === void 0) { start = 0; }
+    if (width === void 0) { width = 2; }
+    if (heigth === void 0) { heigth = 2; }
+    var list = [];
+    for (var i = 0; i < heigth; i++) {
+        list.push(randomList(width, finish, start));
+    }
+    return list;
+}
+function noise(resolution, len, finish, start) {
+    if (resolution === void 0) { resolution = 3; }
+    if (len === void 0) { len = 10; }
+    if (finish === void 0) { finish = 1; }
+    if (start === void 0) { start = 0; }
+    var result = [];
+    var size = Math.round(len / resolution);
+    for (var long = 0; long < size; long++) {
+        var number = random(finish, start);
+        result.push(number);
+        for (var i = 1; i <= resolution; i++) {
+            number += symbol() * random(finish / i, start / i);
+            result.push(number);
+        }
+        result.push(number);
+    }
+    return result;
+}
+exports.__esModule = true;
+exports["default"] = {
+    symbol: symbol,
+    randomList: randomList,
+    randomMatrix: randomMatrix,
+    noise: noise,
+    random: random,
+    getNumber: getNumber
+};
+
+
+/***/ }),
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-throw new Error("Cannot find module \"../lienzo\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lienzo__);
 
 
 
@@ -1649,18 +2661,18 @@ throw new Error("Cannot find module \"../lienzo\"");
 
 
 /***/ }),
-/* 32 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lienzo__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   Transform: {
-    position: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](i * 500, 600),
+    position: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](500, 600),
     scale: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0.5, 0.5)
   },
   Collider: {
@@ -1681,13 +2693,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }
 });
 
+
 /***/ }),
-/* 33 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lienzo__);
 
 
@@ -1704,12 +2717,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 34 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lienzo__);
 
 
@@ -1726,12 +2739,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 35 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lienzo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lienzo__);
 
 
@@ -1751,7 +2764,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 36 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1765,135 +2778,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }
 });
 
-
-/***/ }),
-/* 37 */,
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var DynamicCircle_1 = __webpack_require__(39);
-var DynamicBox_1 = __webpack_require__(40);
-var DynamicRect_1 = __webpack_require__(41);
-var StaticCircle_1 = __webpack_require__(42);
-var StaticBox_1 = __webpack_require__(43);
-var StaticRect_1 = __webpack_require__(44);
-var World_1 = __webpack_require__(45);
-exports.World = World_1["default"];
-function dynamicBody(shape, size, position) {
-    if (shape === 'circle') {
-        return new DynamicCircle_1["default"](position, size);
-    }
-    else if (shape === 'box') {
-        return new DynamicBox_1["default"](position, size);
-    }
-    else if (shape === 'rect') {
-        return new DynamicRect_1["default"](position, size);
-    }
-    else {
-        throw new Error('Type of body [' + shape + '] does not exist.');
-    }
-}
-function staticBody(shape, size, position) {
-    if (shape === 'circle') {
-        return new StaticCircle_1["default"](position, size);
-    }
-    else if (shape === 'box') {
-        return new StaticBox_1["default"](position, size);
-    }
-    else if (shape === 'rect') {
-        return new StaticRect_1["default"](position, size);
-    }
-    else {
-        throw new Error('Type of body [' + shape + '] does not exist.');
-    }
-}
-function body(type, shape, size, position, onCollision) {
-    var collider;
-    if (type === 'static') {
-        collider = staticBody(shape, size, position);
-    }
-    else if (type === 'dynamic') {
-        collider = dynamicBody(shape, size, position);
-    }
-    else {
-        throw new Error('Type [' + type + '] does not exist. dynamic or static');
-    }
-    if (onCollision) {
-        collider.coliciona = onCollision.bind(this);
-    }
-    else {
-        collider.coliciona = function () { };
-    }
-    return collider;
-}
-exports.body = body;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicCircle.js'");
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicBox.js'");
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Dynamic\\DynamicRect.js'");
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticCircle.js'");
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticBox.js'");
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\Static\\StaticRect.js'");
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\RectCircle\\World\\World.js'");
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\physics\\Mesh\\index.js'");
-
-/***/ }),
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\utils\\number.js'");
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Lienzo-Engine\\src\\utils\\id.js'");
 
 /***/ })
 /******/ ]);

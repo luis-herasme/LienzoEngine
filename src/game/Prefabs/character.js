@@ -1,5 +1,5 @@
 
-import { Vector, Graphic } from '../lienzo'
+import { Vector, Graphic } from '../../lienzo'
 
 export default {
   Identifier: {

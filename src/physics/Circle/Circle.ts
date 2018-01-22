@@ -1,6 +1,6 @@
 
 import Vector2D from '../../Vector/Vector2D'
-import id       from '../../utils/id.js'
+import id       from '../../utils/id'
 
 class Circle {
   public position: Vector2D = new Vector2D(0, 0)

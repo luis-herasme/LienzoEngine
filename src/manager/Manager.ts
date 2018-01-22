@@ -10,11 +10,13 @@ export default class Manager extends Render {
 
   constructor (config, id?: string, width?: number, height?: number) {
     super(id, width, height)
-    this.setScene(new Scene(config))
     initEvents(this)
+    console.log(Scene)
+    this.setScene(new Scene(config))
   }
 
   setScene (scene: Scene) {
+    console.log(scene)
     this.gameScene = scene
     this.gameScene.setRender(this)
   }

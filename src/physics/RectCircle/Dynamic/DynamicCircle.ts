@@ -1,8 +1,13 @@
 
-import Vector       from '../../Vector'
+import Vector       from '../../../Vector/Vector2D'
 import DynamicBody  from './DynamicBody'
 
-class DynamicCircle extends DynamicBody {
+export default class DynamicCircle extends DynamicBody {
+  public radius   : number
+  public mass     : number
+  public type     : string
+  public collides : Function
+
   constructor (position, radius, restitution) {
     super(position, restitution)
     this.radius = radius
@@ -23,7 +28,7 @@ class DynamicCircle extends DynamicBody {
       } else {
         this.velocity.inverse()
       }
-      this.coliciona(other)
+      this.collides(other)
     }
   }
 
@@ -36,12 +41,12 @@ class DynamicCircle extends DynamicBody {
 
     if (distX <= (rect.size.x / 2)) {
       this.velocity.y *= -1
-      this.coliciona(rect)
+      this.collides(rect)
     }
 
     if (distY <= (rect.size.y / 2)) {
       this.velocity.x *= -1
-      this.coliciona(rect)
+      this.collides(rect)
     }
 
     const dx = distX - rect.size.x / 2
@@ -49,9 +54,7 @@ class DynamicCircle extends DynamicBody {
 
     if (dx * dx + dy * dy <= (this.radius * this.radius)) {
       this.velocity.addAngle(90)
-      this.coliciona(rect)
+      this.collides(rect)
     }
   }
 }
-
-export default DynamicCircle

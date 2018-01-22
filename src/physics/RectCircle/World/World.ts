@@ -1,8 +1,20 @@
 
-import Vector from '../../Vector'
-
 class World {
-  constructor () {
+  public maxPositionX
+  public minPositionY
+  public minPositionX
+  public maxPositionY
+
+  public dynamicParticles
+  public circleParticles
+  public rectParticles
+
+  public x
+  public y
+
+  constructor (x, y) {
+    this.x = x
+    this.y = y
     this.dynamicParticles = []
     this.circleParticles = []
     this.rectParticles = []

@@ -1,5 +1,5 @@
 
-const vector = require('../../Vector/vectorFunctions')
+import vector from '../../Vector/vectorFunctions'
 
 function meshIntersect (mesh, mesh2) {
   mesh.vertices.points.forEach((vertex, index) => {
@@ -42,7 +42,7 @@ function collision (body, _body) {
 
 let idCounter = 0
 
-function Engine () {
+export default function Engine () {
   this.bodies = []
 
   this.add = (body) => {
@@ -102,5 +102,3 @@ function Engine () {
     })
   }
 }
-
-module.exports = Engine

@@ -1,8 +1,16 @@
 
-import Collision from './Collision'
-import { detectCollision } from './Utils'
+import Collision           from './World'
+// import { detectCollision } from './Utils'
 
 class CollisionHandeler {
+  public particles
+  public resolution
+  public helpers
+  public maxPositionX
+  public minPositionX
+  public maxPositionY
+  public minPositionY
+
   constructor () {
     this.particles = []
     this.resolution = [3, 3]
@@ -110,7 +118,7 @@ class CollisionHandeler {
   }
 
   localChecker (particles) {
-    detectCollision(particles)
+  //  detectCollision(particles)
   }
 }
 

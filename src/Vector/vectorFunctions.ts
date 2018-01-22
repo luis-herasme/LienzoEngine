@@ -11,35 +11,15 @@
  * add([5, 5], [10, 10], [5, 5])
  */
 function add (v1, v2) {
-  const vectors = Array.from(arguments)
-  return vectors.reduce(function (current, future) {
-    future.forEach(function (value, index) {
-      if (current[index]) {
-        current[index] += value
-      } else {
-        current[index] = value
-      }
-    })
-    return current
-  }, [])
+  return [v1[0] + v2[0], v1[1] + v2[1]]
 }
 
 /**
  * This function subtracts all the given vectors
  * @param {Array} Vector takes multiple vectors and subtracts them
  */
-function sub () {
-  const vectors = Array.from(arguments)
-  return vectors.reduce(function (current, future) {
-    future.forEach(function (value, index) {
-      if (current[index]) {
-        current[index] -= value
-      } else {
-        current[index] = value
-      }
-    })
-    return current
-  }, [])
+function sub (v1, v2) {
+  return [v1[0] - v2[0], v1[1] - v2[1]]
 }
 
 /**
@@ -264,7 +244,7 @@ function average (vectorList) {
   return mult(vec, 1 / vectorList.length)
 }
 
-module.exports = {
+export default {
   add,
   average,
   sub,

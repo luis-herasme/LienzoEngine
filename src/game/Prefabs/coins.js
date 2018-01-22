@@ -2,7 +2,7 @@ import { Vector } from '../../lienzo'
 
 export default {
   Transform: {
-    position: new Vector(i * 500, 600),
+    position: new Vector(500, 600),
     scale: new Vector(0.5, 0.5)
   },
   Collider: {

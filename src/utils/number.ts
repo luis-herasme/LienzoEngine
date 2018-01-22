@@ -50,7 +50,7 @@ function noise (resolution = 3, len = 10, finish = 1, start = 0) {
   return result
 }
 
-export {
+export default {
   symbol,
   randomList,
   randomMatrix,

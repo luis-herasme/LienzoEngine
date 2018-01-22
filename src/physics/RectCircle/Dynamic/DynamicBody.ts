@@ -1,12 +1,19 @@
 
-import Vector from '../../Vector'
+import { Vector } from "../../../lienzo"
+import Vector2D from "../../../Vector/Vector2D";
 
 class DinamicBody {
-  constructor (position = new Vector(0, 0), restitution = 1) {
+  public restitution
+  public position     : Vector2D
+  public velocity     : Vector2D
+  public acceleration : Vector2D
+  public isDynamic    : boolean
+  public mass         : number
+  constructor (position = new Vector2D(0, 0), restitution = 1) {
     this.restitution = restitution
     this.position = position
-    this.velocity = new Vector(0, 0)
-    this.acceleration = new Vector(0, 0)
+    this.velocity = new Vector2D(0, 0)
+    this.acceleration = new Vector2D(0, 0)
 
     this.isDynamic = true
   }

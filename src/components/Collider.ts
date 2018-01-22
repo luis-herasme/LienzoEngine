@@ -9,7 +9,7 @@ export default class Collider  {
   private collision   : Function
   private gameObject  : GameObject
   private collider    : Rect.Dynamic|Rect.Collider
-  private size        : Vector2D|string
+  public size
 
   constructor (configuration) { 
     this.restitution = configuration.restitution
