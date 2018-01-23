@@ -1,4 +1,5 @@
 import * as Component from '../components/components'
+import GameObject     from '../Managers/GameObject'
 
 export default function load (configuration): GameObject {
   let result = {}

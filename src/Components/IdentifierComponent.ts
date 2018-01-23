@@ -6,7 +6,7 @@ export default class Identifier {
   public id   : string = id()
   public name : string
 
-  constructor (name, tags) {
+  constructor (name?, tags?) {
     this.name = name
     this.tags = tags
   }

@@ -1,7 +1,7 @@
 
 export default class SoundComponent {
   public sound: Sound
-  constructor (name, src) {
+  constructor (configuration) {
     this.sound = new Sound(src)
   }
 

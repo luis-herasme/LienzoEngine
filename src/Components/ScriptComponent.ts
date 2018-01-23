@@ -1,5 +1,5 @@
 
-import GameObject from '../manager/GameObject'
+import GameObject from '../Managers/GameObject'
 
 export default class ScriptManager {
   private methods   : Object = {}

@@ -1,7 +1,7 @@
 
-import GameObject  from './manager/GameObject'
-import Scene       from './manager/Scene'
-import Manager     from './manager/Manager'
+import GameObject  from './Managers/GameObject'
+import Scene       from './Managers/GameScene'
+import Manager     from './Managers/GameManager'
 import Vector2D    from './Vector/Vector2D'
 import Color       from './render/Color'
 import Graphic     from './render/Graphic'

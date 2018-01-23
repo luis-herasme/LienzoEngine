@@ -1,19 +1,18 @@
 
-import initEvents   from './events'
 import GameScene    from './GameScene'
 import GameObject   from './GameObject'
 import Vector2D     from '../Vector/Vector2D'
 import { Render }   from '../render/index'
 
-export default class Manager extends Render {
-  public gameScene : Scene
+export default class GameManager extends Render {
+  public gameScene : GameScene
 
   constructor (id?: string, width?: number, height?: number) {
     super(id, width, height)
     initEvents(this)
   }
 
-  setScene (scene: Scene): void {
+  setScene (scene: GameScene): void {
     this.gameScene = scene
     this.gameScene.stage.setRender(this)
   }
@@ -31,13 +30,13 @@ export default class Manager extends Render {
   }
 
   start (): void {
-    setInterval(function () {
+    setInterval(() => {
       this.gameScene.update()
     })
   }
 }
 
-export default function initEvents (manager) {
+function initEvents (manager) {
   let keys = {}
 
   setInterval(() => {
@@ -84,8 +83,9 @@ export default function initEvents (manager) {
     }
   })
 }
-runMouseDown (mouse) {
-  const translation = this.stage.translation
+
+function  mouseDown (manager: GameManager, mouse: Vector2D) {
+  const translation = manager.gameScene.stage.translation
   this.gameObjects.forEach(gameObject => {
     if (gameObject.collider) {
       if (mouse.x > gameObject.Transform.position.x + translation.x &&
@@ -97,9 +97,3 @@ runMouseDown (mouse) {
     }
   })
 }  
-
-run (method: string, params?: Array<any>): void {
-    for (let gameObject of this.gameObjects) {
-      gameObject.run(method, params)
-    }
-  }

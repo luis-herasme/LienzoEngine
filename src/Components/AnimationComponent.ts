@@ -15,13 +15,13 @@ export default class AnimationComponent {
     this.frameRate = config.frameRate? config.frameRate: new Vector2D(10, 10)
   }
   
-  load (gameObject) {
+  load (gameObject, Scene) {
     const animation = new Animation(
       this.src,
       gameObject.Transform.scale,
       gameObject.Transform.position,
       this.frameRate,
       this.size)
-    gameObject.graphics.push(animation)
+    Scene.stage.add(animation)
   }
 } 
