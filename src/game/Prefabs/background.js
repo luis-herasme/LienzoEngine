@@ -1,5 +1,5 @@
 export default {
-  transform: {
+  Transform: {
     position: 'fixed'
   },
   Sprite: {

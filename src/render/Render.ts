@@ -26,15 +26,12 @@ class Render {
       this.canvas.height = window.innerHeight
     }
 
-    
     window.addEventListener('resize', () => {
       this.canvas.width = window.innerWidth
       this.canvas.height = window.innerHeight
     })
-    
 
     this.context = this.canvas.getContext('2d') 
-    this.setScene(new Scene())
   }
 
   getWidth (): number {

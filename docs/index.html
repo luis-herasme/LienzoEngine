@@ -6,143 +6,195 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Lienzo</title>
-  <!-- Place this tag in your head or just before your close body tag. -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="./prism.js"></script>
+  <script src="materialize/js/materialize.min.js"></script>
   <link rel="stylesheet" href="materialize/css/materialize.min.css">
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="prism.css">
 </head>
 
 <body>
+
+    <br>
+  <img src="lienzoLogo.png" style="image-rendering: auto;" class="responsive-img" id='logo' alt="">
+
   <div class="container">
-    <div class="row">
-      <div class="col s3">
-        <img src="lienzoLogo.png" class="responsive-img" id='logo' alt="">
-        <div class="collection">
-          <a class="collection-item active">Introduccion</a>
-          <a href="#ecena" href="#!" class="collection-item">Escena</a>
-          <a href="#!" class="collection-item">GameObject</a>
-          <a href="#!" class="collection-item">Eventos</a>
-          <a href="#componentes" class="collection-item">Componentes</a>
-          <a href="#!" class="collection-item">Metodos</a>
-          <a href="#!" class="collection-item">Vector</a>
-          <a href="#!" class="collection-item">Graficos</a>
-          <a href="#!" class="collection-item">Coliciones</a>
-          <a href="#!" class="collection-item">Sprites</a>
-          <a href="#!" class="collection-item">Ejemplos</a>
-        </div>
-      </div>
-      <div class="col s9">
-        <div class="card">
-          <div class="card-content">
-            <a class="github-button" href="https://github.com/luisherasme/lienzo/archive/master.zip" data-size="large" aria-label="Download luisherasme/lienzo on GitHub">Download</a>
-            <a class="github-button" href="https://github.com/luisherasme/lienzo" data-size="large" data-show-count="true" aria-label="Star luisherasme/lienzo on GitHub">Star</a>
-            <a class="github-button" href="https://github.com/luisherasme/lienzo/subscription" data-size="large" data-show-count="true" aria-label="Watch luisherasme/lienzo on GitHub">Watch</a>
+      <br>
+    <a class="github-button" href="https://github.com/luisherasme/lienzo/archive/master.zip" data-size="large" aria-label="Download luisherasme/lienzo on GitHub">Download</a>
+    <a class="github-button" href="https://github.com/luisherasme/lienzo" data-size="large" data-show-count="true" aria-label="Star luisherasme/lienzo on GitHub">Star</a>
+    <a class="github-button" href="https://github.com/luisherasme/lienzo/subscription" data-size="large" data-show-count="true"
+      aria-label="Watch luisherasme/lienzo on GitHub">Watch</a>
+  
+    <div class="card">
+      <div class="card-content">
 
-            <h3>#Introduccion</h3>
-            <span class="card-title">Que es lienzo?</span>
-            <p>
-              Lienzo es un game engine que esta diseñado para facilitar el desarrollo de videojuegos con una arquitectura basada
-              en entidades de juego y componentes.
-            </p>
+        <h3>Introduccion</h3>
+        <span class="card-title">Que es lienzo?</span>
+        <p>
+          Lienzo es un game engine que esta diseñado para facilitar el desarrollo de videojuegos con una arquitectura basada en entidades
+          de juego y componentes.
+        </p>
 
-            <span class="card-title">Cuales herramientas lienzo brinda para el desarrollo de video juegos?</span>
-            <p>
-              Lienzo brinda un conjunto de herramientas para facilitar el desarrollo de videojuegos como un sistema de eventos
-              un motor de renderizado un motor de fisicas y un sistema de UI.
-            </p>
+        <span class="card-title">Cuales herramientas lienzo brinda para el desarrollo de video juegos?</span>
+        <p>
+          Lienzo brinda un conjunto de herramientas para facilitar el desarrollo de videojuegos como un sistema de eventos un motor
+          de renderizado un motor de fisicas y un sistema de UI.
+        </p>
 
-            <span class="card-title">Porque deberia utilizar lienzo?</span>
-            <p>Lienzo es muy facil de utilizar ademas de que el marco de trabajo es similar al de la mayoria de game engines
-              populares como unity o unreal.</p>
+        <span class="card-title">Porque deberia utilizar lienzo?</span>
+        <p>Lienzo es muy facil de utilizar ademas de que el marco de trabajo es similar al de la mayoria de game engines populares
+          como unity o unreal.</p>
 
-            <h3 class='ecena'>#Escena</h3>
-            La escena es lo primero que debes configurar antes de empezar a crear entidades del juego o gameObjects. para crear una scene
-            debes:
-            <pre class="prettyprint lang-javascript">
-              const scene = new lienzo.Scene({
-                gravity: new Vector(0, 10), // Establece la gravedad que tendra el sistema de fisicas
-                system: 'Rect', // Establece el sistema de fisicas que sera utilizado
-                backgroundColor: '#9FE6FF', // Establece el color con el cual se limpiara la pantalla
-                bounds: [6000, 0, 500, 0] // Bordes del sistema de fisicas
-              })
-            </pre> Luego para utilizar ese escena debes:
-            <code>
-              lienzo.manager.setScene(scene)
+        <h3 class='ecena'>Escena</h3>
+        La escena es lo primero que debes configurar antes de empezar a crear entidades del juego o gameObjects. para crear una scene
+        debes:
+        <pre>
+            <code class="lang-javascript">
+            const scene = new lienzo.Scene({
+              gravity: new Vector(0, 10), // Establece la gravedad que tendra el sistema de fisicas
+              system: 'Rect', // Establece el sistema de fisicas que sera utilizado
+              backgroundColor: '#9FE6FF', // Establece el color con el cual se limpiara la pantalla
+              bounds: [6000, 0, 500, 0] // Bordes del sistema de fisicas
+            })
             </code>
-            </p>
+        </pre> Luego para utilizar ese escena debes:
+        <pre>
+            <code class="lang-javascript">
+            lienzo.manager.setScene(scene)
+          </code>
+        </pre>
+        </p>
 
-            <div id="gameObject">
-              <h3>#Entidad de juego o GameObject</h3>
-              <p>
-                <b>Como crear gameObjects?</b>
-                Para crear un game object puedes utilizar:
-                <pre class="prettyprint lang-javascript">
+        <div id="gameObject">
+          <h3>Entidad de juego o GameObject</h3>
+          <p>
+            <b>Como crear gameObjects?</b>
+            Para crear un game object puedes utilizar:
+            <pre>
+                <code class="lang-javascript">
+                const character = new lienzo.gameObject({
+                  name: 'character',
+                  position: new Vector(percent(50, 50)[0], percent(50, 50)[1]),
+                  scale: new Vector(3, 3),
+                  collider: 'fit',
+                  spriteSheet: {
+                    src: 'assets/walk.png',
+                    size: new Vector(16, 28)
+                  }        
+                })
+                scene.add(character)
+              </code>
+            </pre>
+          </p>
+        </div>
+
+        <div id="gameObject">
+          <div id="componentes">
+            <h3>Componentes</h3>
+          </div>
+          <p>
+            Los componentes son las partes que componen a un object de juego y estos pueden ser de varios tipos por ejemplo
+            <pre>
+                <code class="lang-javascript">
                   const character = new lienzo.gameObject({
-                    name: 'character',
-                    position: new Vector(percent(50, 50)[0], percent(50, 50)[1]),
-                    scale: new Vector(3, 3),
-                    collider: 'fit',
-                    spriteSheet: {
+                    name: 'character', // Name component. es utilizado para realizar busquedas en la lista de objetos de juego.
+                    position: new Vector(percent(50, 50)[0], percent(50, 50)[1]), // Transform component
+                    scale: new Vector(3, 3), // Transform component
+                    collider: 'fit', // Collider component
+                    spriteSheet: { // Sprite component
                       src: 'assets/walk.png',
                       size: new Vector(16, 28)
                     }        
                   })
                   scene.add(character)
-                </pre>
-              </p>
-            </div>
-
-            <div id="gameObject">
-              <div id="componentes">
-                <h3>#Componentes</h3>
-              </div>
-              <p>
-                Los componentes son las partes que componen a un object de juego y estos pueden ser de varios tipos por ejemplo
-                <pre class="prettyprint lang-javascript">
-                    const character = new lienzo.gameObject({
-                      name: 'character', // Name component. es utilizado para realizar busquedas en la lista de objetos de juego.
-                      position: new Vector(percent(50, 50)[0], percent(50, 50)[1]), // Transform component
-                      scale: new Vector(3, 3), // Transform component
-                      collider: 'fit', // Collider component
-                      spriteSheet: { // Sprite component
-                        src: 'assets/walk.png',
-                        size: new Vector(16, 28)
-                      }        
-                    })
-                    scene.add(character)
-                  </pre>
-              </p>
-            </div>
-
-
-            <div id="events">
-              <h3>#Sistema de eventos</h3>
-              <p>
-                El sistema consiste de la sigiente lista de eventos
-
-                <ul class="collection">
-                  <li class="collection-item">mouseDown</li>
-                  <li class="collection-item">mouseUp</li>
-                  <li class="collection-item">keyDown</li>
-                  <li class="collection-item">keyUp</li>
-                  <li class="collection-item">keyPress</li>
-                  <li class="collection-item">globalMouseDown</li>
-                  <li class="collection-item">globalMouseMove</li>
-                  <li class="collection-item">globalMouseUp</li>
-                </ul>
-              </p>
-            </div>
-
-
-
-
-
-          </div>
+                </code>
+              </pre>
+          </p>
         </div>
+
+
+        <div id="events">
+          <h3>Sistema de eventos</h3>
+          <p>
+            El sistema consiste de la sigiente lista de eventos
+
+            <ul class="collection">
+              <li class="collection-item">mouseDown</li>
+              <li class="collection-item">mouseUp</li>
+              <li class="collection-item">keyDown</li>
+              <li class="collection-item">keyUp</li>
+              <li class="collection-item">keyPress</li>
+              <li class="collection-item">globalMouseDown</li>
+              <li class="collection-item">globalMouseMove</li>
+              <li class="collection-item">globalMouseUp</li>
+            </ul>
+          </p>
+        </div>
+
+
+
+
+
       </div>
     </div>
   </div>
+
+
+  <ul id="slide-out" class="side-nav">
+
+    <li>
+      <a class="collection-item active">Introduccion</a>
+    </li>
+    <li>
+      <a href="#ecena" href="#!" class="collection-item">Escena</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">GameObject</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Eventos</a>
+    </li>
+    <li>
+      <a href="#componentes" class="collection-item">Componentes</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Metodos</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Vector</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Graficos</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Coliciones</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Sprites</a>
+    </li>
+    <li>
+      <a href="#!" class="collection-item">Ejemplos</a>
+    </li>
+
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li>
+      <a class="subheader">Subheader</a>
+    </li>
+  </ul>
+  <div class="fixed-action-btn">
+  <a class="btn-floating btn-large red button-collapse" data-activates="slide-out">
+      <i class="material-icons">menu</i>
+    </a>
+    </div>
+
+  <script>
+    $(".button-collapse").sideNav();
+  </script>
 </body>
 
 </html>

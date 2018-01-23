@@ -16,6 +16,12 @@ class Scene {
     this.childs = []
   }
 
+  setRender (render: Render): void {
+    this.renderer = render
+    this.context = render.context
+    this.smoth(false)
+  }
+
   add (element): void {
     element.context = this.renderer.context
     this.childs.push(element)
