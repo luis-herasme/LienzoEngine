@@ -76,7 +76,7 @@ export default class GameScene {
   
   update () {
     this.stage.clear(this.background)
-    // this.world.update()
+    this.world.update()
     this.stage.update()
     this.run('update')
   }

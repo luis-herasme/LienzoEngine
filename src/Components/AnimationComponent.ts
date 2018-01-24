@@ -12,7 +12,7 @@ export default class AnimationComponent {
     this.src       = config.src
     this.loop      = config.loop
     this.size      = config.size? config.size: 100
-    this.frameRate = config.frameRate? config.frameRate: new Vector2D(10, 10)
+    this.frameRate = config.frameRate? config.frameRate: 1000 / 60
   }
   
   load (gameObject, Scene) {

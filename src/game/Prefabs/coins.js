@@ -11,6 +11,7 @@ export default {
   },
   Animation: {
     src: 'assets/coin.png',
+    frameRate: 100,
     size: new Vector(700 / 6, 200)
   },
   Script: {

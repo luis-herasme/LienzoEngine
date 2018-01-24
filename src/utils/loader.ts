@@ -3,10 +3,25 @@ import GameObject     from '../Managers/GameObject'
 
 export default function load (configuration): GameObject {
   let result = {}
+  let Transform
+  let Script
   if (configuration) {
     for (let component of Object.keys(configuration)) {
-      result[component] = new Component[component](configuration[component])
+      if (component === 'Transform') {
+        Transform = new Component[component](configuration[component])
+      } else if (component === 'Script') {
+        Script = configuration[component]
+      } else {
+        result[component] = new Component[component](configuration[component])
+      }
     }
   }
-  return new GameObject(result)
+  const gm = new GameObject(result)
+  gm['Transform'].position = Transform.position
+  gm['Transform'].rotation = Transform.rotation
+  gm['Transform'].scale = Transform.scale
+  if (Script) {
+    gm.Script.one(Script)
+  }
+  return gm
 }

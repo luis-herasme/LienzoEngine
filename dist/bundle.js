@@ -667,12 +667,11 @@ var GameObject = (function () {
     function GameObject(components) {
         this.Transform = new TransformComponent_1["default"]();
         this.Identifier = new IdentifierComponent_1["default"]();
-        this.ScriptManager = new ScriptComponent_1["default"](this);
-        console.log(components);
+        this.Script = new ScriptComponent_1["default"](this);
         this.Components = components;
     }
     GameObject.prototype.run = function (name, params) {
-        this.ScriptManager.run(name, params);
+        this.Script.run(name, params);
     };
     GameObject.prototype.destroy = function () {
         this.Components.forEach(function (component) {
@@ -806,14 +805,17 @@ var World = (function () {
     World.prototype.update = function () {
         var _this = this;
         this.particles.forEach(function (particle) {
-            _this.check(particle);
-            if (!particle.gameObject.static) {
+            //  this.check(particle)
+            //  if (!particle.gameObject.static) {
+            if (particle.update)
                 particle.update();
-                if (_this.gravity)
+            if (_this.gravity) {
+                if (particle.addForce)
                     particle.addForce(_this.gravity);
-                if (_this.boundsSet)
-                    _this.insideBounds(particle);
             }
+            if (_this.boundsSet)
+                _this.insideBounds(particle);
+            // }
         });
     };
     World.prototype.center = function (body) {
@@ -1144,7 +1146,7 @@ var scene = new lienzo_1.Scene({
 });
 var manager = new lienzo_1.Manager();
 manager.setScene(scene);
-scene.add([character_1["default"], coins_1["default"], grass_1["default"], slime_1["default"], clouds_1["default"], background_1["default"]]);
+scene.add([background_1["default"], character_1["default"], coins_1["default"], grass_1["default"], slime_1["default"], clouds_1["default"]]);
 manager.start();
 
 
@@ -1166,7 +1168,7 @@ var Transform = (function () {
             if (configuration.rotation)
                 this.rotation = configuration.rotation;
             if (configuration.scale)
-                this.position = configuration.scale;
+                this.scale = configuration.scale;
         }
     }
     Transform.prototype.rotate = function (rotation) {
@@ -1321,7 +1323,7 @@ var GameScene = (function () {
     };
     GameScene.prototype.update = function () {
         this.stage.clear(this.background);
-        // this.world.update()
+        this.world.update();
         this.stage.update();
         this.run('update');
     };
@@ -2287,13 +2289,30 @@ var Component = __webpack_require__(42);
 var GameObject_1 = __webpack_require__(6);
 function load(configuration) {
     var result = {};
+    var Transform;
+    var Script;
     if (configuration) {
         for (var _i = 0, _a = Object.keys(configuration); _i < _a.length; _i++) {
             var component = _a[_i];
-            result[component] = new Component[component](configuration[component]);
+            if (component === 'Transform') {
+                Transform = new Component[component](configuration[component]);
+            }
+            else if (component === 'Script') {
+                Script = configuration[component];
+            }
+            else {
+                result[component] = new Component[component](configuration[component]);
+            }
         }
     }
-    return new GameObject_1["default"](result);
+    var gm = new GameObject_1["default"](result);
+    gm['Transform'].position = Transform.position;
+    gm['Transform'].rotation = Transform.rotation;
+    gm['Transform'].scale = Transform.scale;
+    if (Script) {
+        gm.Script.one(Script);
+    }
+    return gm;
 }
 exports.__esModule = true;
 exports["default"] = load;
@@ -2366,13 +2385,12 @@ exports["default"] = ScriptManager;
 "use strict";
 
 var Animation_1 = __webpack_require__(13);
-var Vector2D_1 = __webpack_require__(0);
 var AnimationComponent = (function () {
     function AnimationComponent(config) {
         this.src = config.src;
         this.loop = config.loop;
         this.size = config.size ? config.size : 100;
-        this.frameRate = config.frameRate ? config.frameRate : new Vector2D_1["default"](10, 10);
+        this.frameRate = config.frameRate ? config.frameRate : 1000 / 60;
     }
     AnimationComponent.prototype.load = function (gameObject, Scene) {
         var animation = new Animation_1["default"](this.src, gameObject.Transform.scale, gameObject.Transform.position, this.frameRate, this.size);
@@ -2421,7 +2439,7 @@ var Transform = (function () {
             if (configuration.rotation)
                 this.rotation = configuration.rotation;
             if (configuration.scale)
-                this.position = configuration.scale;
+                this.scale = configuration.scale;
         }
     }
     Transform.prototype.rotate = function (rotation) {
@@ -2721,47 +2739,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     size: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](16, 28)
   },
 
-  Script: {
+  Script: {/*
     init () {
       this.jump = true
       this.coins = 0
       this.health = 30
-      let x = new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Graphic"](function () {
+      let x = new Graphic(function () {
         this.text(`Monedas: ${this.gameObject.coins}`, -this.position.x + 50, this.position.y + 75, { fillStyle: '#FFF', font: 'bold 34px Helvetica', lineWidth: 1 }, true)
-      }, new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, 0))
+      }, new Vector(0, 0))
 
       x.gameObject = this
-      this.scene.renderWorld.add(x)
+      this.scene.stage.add(x)
 
-      let health = new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Graphic"](function () {
+      let health = new Graphic(function () {
         this.rect(this.position.x, this.position.y - 15, 90, 10, '#000')
         this.rect(this.position.x, this.position.y - 15, this.gameObject.health * 3, 10, '#F00')
         this.text(`Health ${this.gameObject.health}`, this.position.x, this.position.y - 20, { fillStyle: '#000', font: 'bold 16px Arial' })
       }, this.transform.position)
       health.gameObject = this
-      this.scene.renderWorld.add(health)
+      this.scene.stage.add(health)
     },
 
     mouseDown (mouse) {
-      let x = new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Graphic"](function () {
+      let x = new Graphic(function () {
         this.rect(this.position.x, this.position.y - 25, 30 * 10, 30)
         this.text(`Monedas ${this.gameObject.coins}`, this.position.x, this.position.y, { fillStyle: '#f00', font: '34px Arial bold' })
       }, this.transform.position)
       x.gameObject = this
 
-      this.scene.renderWorld.add(x)
-      setTimeout(() => this.scene.renderWorld.remove(x), 1000)
+      this.scene.stage.add(x)
+      setTimeout(() => this.scene.stage.remove(x), 1000)
     },
-
+*/
     keyPress (keys) {
-      if (keys['d']) this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](1000, 0))
+      if (keys['d']) this.Components.Collider.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](1000, 0))
       if (keys['a']) this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](-1000, 0))
       if (keys['s']) this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, 1000))
       if (keys['w']) this.run('jump')
     },
 
     update () {
-      if (this.transform.position.y > window.innerHeight) {
+      console.log('hola')
+      if (this.Transform.position.y > window.innerHeight) {
         console.log('U lose')
       }
     },
@@ -2798,6 +2817,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   Animation: {
     src: 'assets/coin.png',
+    frameRate: 100,
     size: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](700 / 6, 200)
   },
   Script: {
@@ -2823,6 +2843,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   Transform: {
+    position: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, 500),
     scale: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](5, 2)
   },
   Collider: {
@@ -2845,7 +2866,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   Transform: {
-    position: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](600, 250)
+    position: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](600, 250),
+    scale: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0.5, 0.5)
   },
   Collider: {
     size: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](100, 50)
@@ -2853,7 +2875,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   Sprite: 'assets/Slime.png',
   Script: {
     update () {
-      this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](80, 0))
+     // this.collider.addForce(new Vector(80, 0))
     }
   }
 });
@@ -2878,7 +2900,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   Sprite: 'assets/clouds.png',
   Script: {
     update () {
-      this.transform.position.x += 5
+      this.Transform.position.x += 5
     }
   }
 });
@@ -2894,9 +2916,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   Transform: {
     position: 'fixed'
   },
-  Sprite: {
-    src: 'assets/bg.png'
-  }
+  Sprite: 'assets/bg.png'
 });
 
 

@@ -2,7 +2,8 @@ import { Vector } from '../../lienzo'
 
 export default {
   Transform: {
-    position: new Vector(600, 250)
+    position: new Vector(600, 250),
+    scale: new Vector(0.5, 0.5)
   },
   Collider: {
     size: new Vector(100, 50)
@@ -10,7 +11,7 @@ export default {
   Sprite: 'assets/Slime.png',
   Script: {
     update () {
-      this.collider.addForce(new Vector(80, 0))
+     // this.collider.addForce(new Vector(80, 0))
     }
   }
 }

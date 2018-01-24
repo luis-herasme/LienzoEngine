@@ -10,7 +10,7 @@ export default class Transform {
     if (configuration) {
       if (configuration.position) this.position = configuration.position
       if (configuration.rotation) this.rotation = configuration.rotation
-      if (configuration.scale)    this.position = configuration.scale
+      if (configuration.scale)    this.scale    = configuration.scale
     }
   }
 

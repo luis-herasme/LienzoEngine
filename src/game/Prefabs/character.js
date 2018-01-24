@@ -20,7 +20,7 @@ export default {
     size: new Vector(16, 28)
   },
 
-  Script: {
+  Script: {/*
     init () {
       this.jump = true
       this.coins = 0
@@ -30,7 +30,7 @@ export default {
       }, new Vector(0, 0))
 
       x.gameObject = this
-      this.scene.renderWorld.add(x)
+      this.scene.stage.add(x)
 
       let health = new Graphic(function () {
         this.rect(this.position.x, this.position.y - 15, 90, 10, '#000')
@@ -38,7 +38,7 @@ export default {
         this.text(`Health ${this.gameObject.health}`, this.position.x, this.position.y - 20, { fillStyle: '#000', font: 'bold 16px Arial' })
       }, this.transform.position)
       health.gameObject = this
-      this.scene.renderWorld.add(health)
+      this.scene.stage.add(health)
     },
 
     mouseDown (mouse) {
@@ -48,19 +48,20 @@ export default {
       }, this.transform.position)
       x.gameObject = this
 
-      this.scene.renderWorld.add(x)
-      setTimeout(() => this.scene.renderWorld.remove(x), 1000)
+      this.scene.stage.add(x)
+      setTimeout(() => this.scene.stage.remove(x), 1000)
     },
-
+*/
     keyPress (keys) {
-      if (keys['d']) this.collider.addForce(new Vector(1000, 0))
+      if (keys['d']) this.Components.Collider.collider.addForce(new Vector(1000, 0))
       if (keys['a']) this.collider.addForce(new Vector(-1000, 0))
       if (keys['s']) this.collider.addForce(new Vector(0, 1000))
       if (keys['w']) this.run('jump')
     },
 
     update () {
-      if (this.transform.position.y > window.innerHeight) {
+      console.log('hola')
+      if (this.Transform.position.y > window.innerHeight) {
         console.log('U lose')
       }
     },

@@ -90,12 +90,14 @@ class World {
 
   update (): void {
     this.particles.forEach(particle => {
-      this.check(particle)
-      if (!particle.gameObject.static) {
-        particle.update()
-        if (this.gravity) particle.addForce(this.gravity)  
+    //  this.check(particle)
+    //  if (!particle.gameObject.static) {
+        if (particle.update) particle.update()
+        if (this.gravity) {
+         if (particle.addForce) particle.addForce(this.gravity)  
+        }
         if (this.boundsSet) this.insideBounds(particle)
-      }
+      // }
     })
   }
 

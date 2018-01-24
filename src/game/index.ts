@@ -17,5 +17,5 @@ const scene = new Scene({
 })
 const manager = new Manager()
 manager.setScene(scene)
-scene.add([ character, coins, grass, slime, clouds, background])
+scene.add([ background, character, coins, grass, slime, clouds])
 manager.start()

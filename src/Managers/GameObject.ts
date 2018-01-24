@@ -7,17 +7,16 @@ import ScriptComponent     from '../Components/ScriptComponent'
 export default class GameObject {
   public Transform     : TransformComponent  = new TransformComponent()
   public Identifier    : IdentifierComponent = new IdentifierComponent()
-  public ScriptManager : ScriptComponent     = new ScriptComponent(this)
+  public Script        : ScriptComponent     = new ScriptComponent(this)
   public Scene         : Scene
   public Components
 
   constructor (components) {
-    console.log(components)
     this.Components = components
   }
 
   run (name: string, params?: Array<any>): void {
-    this.ScriptManager.run(name, params)
+    this.Script.run(name, params)
   }
 
   destroy (): void {

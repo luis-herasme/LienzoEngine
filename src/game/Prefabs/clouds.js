@@ -9,7 +9,7 @@ export default {
   Sprite: 'assets/clouds.png',
   Script: {
     update () {
-      this.transform.position.x += 5
+      this.Transform.position.x += 5
     }
   }
 }
