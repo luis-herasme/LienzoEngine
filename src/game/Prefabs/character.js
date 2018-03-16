@@ -17,6 +17,7 @@ export default {
 
   Animation: {
     src: 'assets/walk.png',
+    frameRate: 100,
     size: new Vector(16, 28)
   },
 
@@ -54,9 +55,9 @@ export default {
 */
     keyPress (keys) {
       if (keys['d']) this.Components.Collider.collider.addForce(new Vector(1000, 0))
-      if (keys['a']) this.collider.addForce(new Vector(-1000, 0))
-      if (keys['s']) this.collider.addForce(new Vector(0, 1000))
-      if (keys['w']) this.run('jump')
+      if (keys['a']) this.Components.Collider.collider.addForce(new Vector(-1000, 0))
+      if (keys['s']) this.Components.Collider.collider.addForce(new Vector(0, 1000))
+      if (keys['w']) this.Components.Collider.collider.addForce(new Vector(0, -1000))
     },
 
     update () {

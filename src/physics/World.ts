@@ -90,7 +90,7 @@ class World {
 
   update (): void {
     this.particles.forEach(particle => {
-    //  this.check(particle)
+    this.check(particle)
     //  if (!particle.gameObject.static) {
         if (particle.update) particle.update()
         if (this.gravity) {
@@ -149,14 +149,14 @@ class World {
           particle.position.x + particle.size.x > this.particles[i].position.x &&
           particle.position.y < this.particles[i].position.y + this.particles[i].size.y &&
           particle.size.y + particle.position.y > this.particles[i].position.y) {
-
+/*
             if (!particle.gameObject.static && !this.particles[i].gameObject.static) {
               particle.inelasticCollision(this.particles[i])
             }
-
-            if (!particle.gameObject.static) {
+*/
+           // if (!particle.gameObject.static) {
               this.separate(particle, this.particles[i])
-            }
+           // }
 
             if (particle.collision) {
               particle.collision(this.particles[i])

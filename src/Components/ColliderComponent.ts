@@ -22,11 +22,17 @@ export default class Collider  {
   load (gameObject: GameObject, Scene: GameScene) {
     if (this.size === 'fit') {
       if (this.static) {
-        this.collider = new Rect.Collider(
-          gameObject.Transform.position,
-          new Vector2D(50, 50)/*
-          gameObject.sprite.getSize()*/
-        )
+        if (gameObject.Components.Sprite) {
+          this.collider = new Rect.Collider(
+            gameObject.Transform.position,
+            gameObject.Transform.scale)
+        } else {
+          this.collider = new Rect.Collider(
+            gameObject.Transform.position,
+            new Vector2D(50, 50)/*
+            gameObject.sprite.getSize()*/
+          )
+        }
       }
       else {
         this.collider = new Rect.Dynamic(

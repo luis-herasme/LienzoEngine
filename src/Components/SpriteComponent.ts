@@ -6,6 +6,7 @@ import GameScene  from '../Managers/GameScene'
 
 export default class SpriteComponent {
   private src: string
+  public sprite: Sprite
 
   constructor (src) {
     this.src = src
@@ -16,12 +17,12 @@ export default class SpriteComponent {
       gameObject.Transform.position,
       gameObject.Transform.scale,
       gameObject.Transform.rotation)
-    const sprite = new Sprite(
+    this.sprite = new Sprite(
       this.src,
       gameObject.Transform.position,
       gameObject.Transform.scale,
       gameObject.Transform.rotation,
       new Vector2D(0, 0))
-    Scene.stage.add(sprite)
+    Scene.stage.add(this.sprite)
   }
 }

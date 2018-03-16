@@ -19,6 +19,7 @@ export default class GameScene {
       if (config.background)  {
         this.background  = config.background
       }
+
       if (config.bounds) {
         this.world.setBounds(config.bounds)
       }

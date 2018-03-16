@@ -805,7 +805,7 @@ var World = (function () {
     World.prototype.update = function () {
         var _this = this;
         this.particles.forEach(function (particle) {
-            //  this.check(particle)
+            _this.check(particle);
             //  if (!particle.gameObject.static) {
             if (particle.update)
                 particle.update();
@@ -863,12 +863,14 @@ var World = (function () {
                     particle.position.x + particle.size.x > this.particles[i].position.x &&
                     particle.position.y < this.particles[i].position.y + this.particles[i].size.y &&
                     particle.size.y + particle.position.y > this.particles[i].position.y) {
-                    if (!particle.gameObject.static && !this.particles[i].gameObject.static) {
-                        particle.inelasticCollision(this.particles[i]);
-                    }
-                    if (!particle.gameObject.static) {
-                        this.separate(particle, this.particles[i]);
-                    }
+                    /*
+                                if (!particle.gameObject.static && !this.particles[i].gameObject.static) {
+                                  particle.inelasticCollision(this.particles[i])
+                                }
+                    */
+                    // if (!particle.gameObject.static) {
+                    this.separate(particle, this.particles[i]);
+                    // }
                     if (particle.collision) {
                         particle.collision(this.particles[i]);
                     }
@@ -1142,7 +1144,7 @@ var background_1 = __webpack_require__(56);
 var scene = new lienzo_1.Scene({
     system: 'Rect',
     background: '#9FE6FF',
-    gravity: new lienzo_1.Vector(0, 500) // ,
+    gravity: new lienzo_1.Vector(0, 0) // ,
 });
 var manager = new lienzo_1.Manager();
 manager.setScene(scene);
@@ -2477,8 +2479,8 @@ var SpriteComponent = (function () {
     }
     SpriteComponent.prototype.load = function (gameObject, Scene) {
         console.log(this.src, gameObject.Transform.position, gameObject.Transform.scale, gameObject.Transform.rotation);
-        var sprite = new Sprite_1["default"](this.src, gameObject.Transform.position, gameObject.Transform.scale, gameObject.Transform.rotation, new Vector2D_1["default"](0, 0));
-        Scene.stage.add(sprite);
+        this.sprite = new Sprite_1["default"](this.src, gameObject.Transform.position, gameObject.Transform.scale, gameObject.Transform.rotation, new Vector2D_1["default"](0, 0));
+        Scene.stage.add(this.sprite);
     };
     return SpriteComponent;
 }());
@@ -2503,8 +2505,13 @@ var Collider = (function () {
     Collider.prototype.load = function (gameObject, Scene) {
         if (this.size === 'fit') {
             if (this.static) {
-                this.collider = new index_1.Rect.Collider(gameObject.Transform.position, new Vector2D_1["default"](50, 50) /*
-                gameObject.sprite.getSize()*/);
+                if (gameObject.Components.Sprite) {
+                    this.collider = new index_1.Rect.Collider(gameObject.Transform.position, gameObject.Transform.scale);
+                }
+                else {
+                    this.collider = new index_1.Rect.Collider(gameObject.Transform.position, new Vector2D_1["default"](50, 50) /*
+                    gameObject.sprite.getSize()*/);
+                }
             }
             else {
                 this.collider = new index_1.Rect.Dynamic(gameObject.Transform.position, this.restitution, new Vector2D_1["default"](50, 50));
@@ -2736,6 +2743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   Animation: {
     src: 'assets/walk.png',
+    frameRate: 100,
     size: new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](16, 28)
   },
 
@@ -2773,9 +2781,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 */
     keyPress (keys) {
       if (keys['d']) this.Components.Collider.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](1000, 0))
-      if (keys['a']) this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](-1000, 0))
-      if (keys['s']) this.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, 1000))
-      if (keys['w']) this.run('jump')
+      if (keys['a']) this.Components.Collider.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](-1000, 0))
+      if (keys['s']) this.Components.Collider.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, 1000))
+      if (keys['w']) this.Components.Collider.collider.addForce(new __WEBPACK_IMPORTED_MODULE_0__lienzo__["Vector"](0, -1000))
     },
 
     update () {
