@@ -12,8 +12,8 @@ import background from './Prefabs/background'
 const scene = new Scene({
   system: 'Rect',
   background: '#9FE6FF',    
-  gravity: new Vector(0, 0)// ,
-  // gameObjects: [ character, coins, grass, slime, clouds, background]
+  gravity: new Vector(0, 0),
+  gameObjects: [ character, coins, grass, slime, clouds, background]
 })
 const manager = new Manager()
 manager.setScene(scene)

@@ -8,5 +8,11 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "dibujo": "^5.0.17",
+    "vector_class": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^2.9.2"
+  }
 }

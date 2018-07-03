@@ -1,7 +1,7 @@
 import * as Component from '../components/components'
-import GameObject     from '../Managers/GameObject'
+import GameObject from '../Managers/GameObject'
 
-export default function load (configuration): GameObject {
+function load(configuration): GameObject {
   let result = {}
   let Transform
   let Script
@@ -25,3 +25,5 @@ export default function load (configuration): GameObject {
   }
   return gm
 }
+
+export default load
