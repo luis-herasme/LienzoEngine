@@ -3516,20 +3516,29 @@ exports["default"] = load;
 },{"../components/components":61,"../Managers/GameObject":31}],32:[function(require,module,exports) {
 "use strict";
 
+var __importStar = this && this.__importStar || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) {
+        if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    }result["default"] = mod;
+    return result;
+};
 var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var fisica_1 = require("fisica");
+var fisica = __importStar(require("fisica"));
 var dibujo_1 = require("dibujo");
 var loader_1 = __importDefault(require("../utils/loader"));
+console.log(fisica);
 var GameScene = /** @class */function () {
     function GameScene(config) {
-        this.world = new fisica_1.Rect.World();
+        this.world = new Rect.World();
         this.background = '#000000';
         this.paused = false;
         this.gameObjects = [];
-        this.world = new fisica_1.Rect.World(config.gravity);
+        this.world = new Rect.World(config.gravity);
         if (config) {
             if (config.background) {
                 this.background = config.background;

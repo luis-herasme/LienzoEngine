@@ -1,6 +1,5 @@
 
 import GameScene from './GameScene'
-import GameObject from './GameObject'
 import { Vector2D } from 'vector_class'
 import { Render } from 'dibujo'
 

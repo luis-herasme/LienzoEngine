@@ -1,8 +1,10 @@
 
-import { Rect } from 'fisica'
+import * as fisica from 'fisica'
 import { Scene } from 'dibujo'
 import GameObject from './GameObject'
 import load from '../utils/loader'
+
+console.log(fisica)
 
 class GameScene {
   public stage: Scene
