@@ -1,7 +1,7 @@
 
 import GameScene from './GameScene'
 import GameObject from './GameObject'
-import { Vector2D } from 'dibujo'
+import { Vector2D } from 'vector_class'
 import { Render } from 'dibujo'
 
 export default class GameManager extends Render {

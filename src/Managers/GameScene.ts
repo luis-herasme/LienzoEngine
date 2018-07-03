@@ -1,13 +1,11 @@
 
 import { Rect } from 'fisica'
 import { Scene } from 'dibujo'
-import { Vector2D } from 'vector_class'
 import GameObject from './GameObject'
-import { Render } from 'dibujo'
 import load from '../utils/loader'
 
 class GameScene {
-  public stage: Scene = new Scene()
+  public stage: Scene
   public world: Rect.World = new Rect.World()
   private background: string = '#000000'
   private paused: boolean = false
@@ -18,6 +16,10 @@ class GameScene {
     if (config) {
       if (config.background) {
         this.background = config.background
+      }
+
+      if (config.manager) {
+        this.stage = new Scene(config.manager)
       }
 
       if (config.bounds) {
@@ -55,7 +57,7 @@ class GameScene {
     let found = []
     for (let gameObject of this.gameObjects) {
       if (gameObject.Identifier) {
-        if (gameObject.Identifier.name === name) {
+        if (gameObject.Identifier[property] === value) {
           found.push(gameObject)
         }
       }

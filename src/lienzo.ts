@@ -1,10 +1,10 @@
 
-import GameObject  from './Managers/GameObject'
-import Scene       from './Managers/GameScene'
-import Manager     from './Managers/GameManager'
-import Vector2D    from './Vector/Vector2D'
-import Color       from './render/Color'
-import Graphic     from './render/Graphic'
+import GameObject from './Managers/GameObject'
+import Scene from './Managers/GameScene'
+import Manager from './Managers/GameManager'
+import { Vector2D } from 'vector_class'
+import { Color } from 'dibujo'
+import { Graphic } from 'dibujo'
 import * as number from './utils/number'
 
 const Vector = Vector2D

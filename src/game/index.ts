@@ -1,4 +1,4 @@
-
+console.log('hola')
 import { Vector, Manager, Scene } from '../lienzo'
 
 // Prefabs
@@ -15,6 +15,7 @@ const scene = new Scene({
   gravity: new Vector(0, 0),
   gameObjects: [character, coins, grass, slime, clouds, background]
 })
+
 const manager = new Manager()
 manager.setScene(scene)
 scene.add([background, character, coins, grass, slime, clouds])
