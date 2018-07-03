@@ -1,42 +1,42 @@
 
-import GameScene    from './GameScene'
-import GameObject   from './GameObject'
-import Vector2D     from '../Vector/Vector2D'
-import { Render }   from '../render/index'
+import GameScene from './GameScene'
+import GameObject from './GameObject'
+import { Vector2D } from 'dibujo'
+import { Render } from 'dibujo'
 
 export default class GameManager extends Render {
-  public gameScene : GameScene
+  public gameScene: GameScene
 
-  constructor (id?: string, width?: number, height?: number) {
+  constructor(id?: string, width?: number, height?: number) {
     super(id, width, height)
     initEvents(this)
   }
 
-  setScene (scene: GameScene): void {
+  setScene(scene: GameScene): void {
     this.gameScene = scene
     this.gameScene.stage.setRender(this)
   }
 
-  getWidth (): number {
+  getWidth(): number {
     return this.getWidth()
   }
 
-  getHeight (): number {
+  getHeight(): number {
     return this.getHeight()
   }
 
-  getTranslation (): Vector2D {
+  getTranslation(): Vector2D {
     return this.gameScene.stage.translation
   }
 
-  start (): void {
+  start(): void {
     setInterval(() => {
       this.gameScene.update()
     })
   }
 }
 
-function initEvents (manager) {
+function initEvents(manager) {
   let keys = {}
 
   setInterval(() => {
@@ -84,7 +84,7 @@ function initEvents (manager) {
   })
 }
 
-function  mouseDown (manager: GameManager, mouse: Vector2D) {
+function mouseDown(manager: GameManager, mouse: Vector2D) {
   const translation = manager.gameScene.stage.translation
   this.gameObjects.forEach(gameObject => {
     if (gameObject.collider) {

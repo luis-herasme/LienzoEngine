@@ -1,18 +1,18 @@
 
-import Sprite     from '../render/Sprite'
-import Vector2D   from '../Vector/Vector2D'
+import Sprite from 'dibujo'
+import { Vector2D } from 'vector_class'
 import GameObject from '../Managers/GameObject'
-import GameScene  from '../Managers/GameScene'
+import GameScene from '../Managers/GameScene'
 
 export default class SpriteComponent {
   private src: string
   public sprite: Sprite
 
-  constructor (src) {
+  constructor(src) {
     this.src = src
   }
 
-  load (gameObject: GameObject, Scene: GameScene): void {
+  load(gameObject: GameObject, Scene: GameScene): void {
     console.log(this.src,
       gameObject.Transform.position,
       gameObject.Transform.scale,

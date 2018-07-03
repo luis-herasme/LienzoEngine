@@ -1,21 +1,21 @@
 
-import Animation  from '../render/Animation'
-import Vector2D   from '../Vector/Vector2D'
+import {Animation} from 'dibujo'
+import {Vector2D} from 'vector_class'
 
-export default class AnimationComponent {
-  private src       : string
-  private size      : Vector2D
-  private frameRate : number
-  private loop      : boolean
+class AnimationComponent {
+  private src: string
+  private size: Vector2D
+  private frameRate: number
+  private loop: boolean
 
-  constructor (config) {
-    this.src       = config.src
-    this.loop      = config.loop
-    this.size      = config.size? config.size: 100
-    this.frameRate = config.frameRate? config.frameRate: 1000 / 60
+  constructor(config) {
+    this.src = config.src
+    this.loop = config.loop
+    this.size = config.size ? config.size : 100
+    this.frameRate = config.frameRate ? config.frameRate : 1000 / 60
   }
-  
-  load (gameObject, Scene) {
+
+  load(gameObject, Scene) {
     const animation = new Animation(
       this.src,
       gameObject.Transform.scale,
@@ -25,3 +25,5 @@ export default class AnimationComponent {
     Scene.stage.add(animation)
   }
 } 
+
+export default AnimationComponent

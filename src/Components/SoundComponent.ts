@@ -1,8 +1,8 @@
 
 export default class SoundComponent {
-  public sound: Sound
+  public sound: HTMLAudioElement
   constructor (configuration) {
-    this.sound = new Sound(src)
+    this.sound = new Audio(configuration.src)
   }
 
   play () {
