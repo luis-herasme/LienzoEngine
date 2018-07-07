@@ -1,29 +1,78 @@
 
+import { Render } from 'dibujo'
 import GameScene from './GameScene'
 import { Vector2D } from 'vector_class'
-import { Render } from 'dibujo'
 
-export default class GameManager extends Render {
+/**
+ * has 3 optional parameters in the configuration
+ * id the id of the canvas
+ * width and height
+ */
+class GameManager {
+
+  public render: Render
   public gameScene: GameScene
 
-  constructor(id?: string, width?: number, height?: number) {
-    super(id, width, height)
-    initEvents(this)
+  constructor(configuration) {
+    const id = configuration.id ? configuration.id : undefined
+    const width = configuration.width ? configuration.width : undefined
+    const height = configuration.height ? configuration.height : undefined
+
+    this.render = new Render(id, width, height)
+    this.gameScene = new GameScene(this.render)
+    this.initEvents()
   }
 
-  setScene(scene: GameScene): void {
-    this.gameScene = scene
-    this.gameScene.stage.setRender(this)
-  }
+  initEvents() {
+    let keys = {}
 
-  getWidth(): number {
-    return this.getWidth()
+    setInterval(() => {
+      Object.keys(keys).some((key) => {
+        if (keys[key]) {
+          if (!this.gameScene.paused) {
+            this.gameScene.run('keyPress', [keys])
+          }
+          return true
+        }
+      })
+    }, 20)
+  
+    document.addEventListener('mousedown', function (event) {
+      if (!this.gameScene.paused) {
+        this.gameScene.run('globalMouseDown', [new Vector2D(event.clientX, event.clientY)])
+        this.gameScene.runMouseDown(event, [new Vector2D(event.clientX, event.clientY)])
+      }
+    })
+  
+    document.addEventListener('mousemove', function (event) {
+      if (!this.gameScene.paused) {
+        this.gameScene.run('globalMouseMove', [new Vector2D(event.clientX, event.clientY)])
+      }
+    })
+  
+    document.addEventListener('mouseup', function (event) {
+      if (!this.gameScene.paused) {
+        this.gameScene.run('globalMouseUp', [new Vector2D(event.clientX, event.clientY)])
+      }
+    })
+  
+    document.addEventListener('keydown', function (event) {
+      keys[event.key] = true
+      if (!this.gameScene.paused) {
+        this.gameScene.run('keyDown', [event.key])
+      }
+    })
+  
+    document.addEventListener('keyup', function (event) {
+      keys[event.key] = false
+      if (!this.gameScene.paused) {
+        this.gameScene.run('keyUp', [event.key])
+      }
+    })
   }
+}
 
-  getHeight(): number {
-    return this.getHeight()
-  }
-
+  /*
   getTranslation(): Vector2D {
     return this.gameScene.stage.translation
   }
@@ -33,55 +82,10 @@ export default class GameManager extends Render {
       this.gameScene.update()
     })
   }
-}
+*/
 
-function initEvents(manager) {
-  let keys = {}
 
-  setInterval(() => {
-    Object.keys(keys).some((key) => {
-      if (keys[key]) {
-        if (!manager.gameScene.paused) {
-          manager.gameScene.run('keyPress', [keys])
-        }
-        return true
-      }
-    })
-  }, 20)
 
-  document.addEventListener('mousedown', function (event) {
-    if (!manager.gameScene.paused) {
-      manager.gameScene.run('globalMouseDown', [new Vector2D(event.clientX, event.clientY)])
-      manager.gameScene.runMouseDown(event, [new Vector2D(event.clientX, event.clientY)])
-    }
-  })
-
-  document.addEventListener('mousemove', function (event) {
-    if (!manager.gameScene.paused) {
-      manager.gameScene.run('globalMouseMove', [new Vector2D(event.clientX, event.clientY)])
-    }
-  })
-
-  document.addEventListener('mouseup', function (event) {
-    if (!manager.gameScene.paused) {
-      manager.gameScene.run('globalMouseUp', [new Vector2D(event.clientX, event.clientY)])
-    }
-  })
-
-  document.addEventListener('keydown', function (event) {
-    keys[event.key] = true
-    if (!manager.gameScene.paused) {
-      manager.gameScene.run('keyDown', [event.key])
-    }
-  })
-
-  document.addEventListener('keyup', function (event) {
-    keys[event.key] = false
-    if (!manager.gameScene.paused) {
-      manager.gameScene.run('keyUp', [event.key])
-    }
-  })
-}
 
 function mouseDown(manager: GameManager, mouse: Vector2D) {
   const translation = manager.gameScene.stage.translation
@@ -95,4 +99,6 @@ function mouseDown(manager: GameManager, mouse: Vector2D) {
       }
     }
   })
-}  
+}
+
+export default GameManager

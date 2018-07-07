@@ -1,33 +1,29 @@
 
-import * as fisica from 'fisica'
+import load from '../loader'
 import { Scene } from 'dibujo'
+import * as fisica from 'fisica'
 import GameObject from './GameObject'
-import load from '../utils/loader'
-
-console.log(fisica)
 
 class GameScene {
+
   public stage: Scene
-  public world: Rect.World = new Rect.World()
-  private background: string = '#000000'
+  public world: fisica.Rect.World// = new fisica.Rect.World()
   private paused: boolean = false
+  private background: string = '#000000'
   private gameObjects: Array<GameObject> = []
 
-  constructor(config?) {
-    this.world = new Rect.World(config.gravity)
+  constructor(configuration?) {
+    this.world = new fisica.Rect.World(config.gravity)
     if (config) {
       if (config.background) {
         this.background = config.background
       }
-
       if (config.manager) {
         this.stage = new Scene(config.manager)
       }
-
       if (config.bounds) {
         this.world.setBounds(config.bounds)
       }
-
       if (config.gameObjects) {
         this.add(config.gameObjects)
       }

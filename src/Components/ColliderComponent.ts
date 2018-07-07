@@ -5,6 +5,7 @@ import GameObject from '../Managers/GameObject'
 import GameScene from '../Managers/GameScene'
 
 class Collider {
+
   private static: boolean
   private restitution: Vector2D
   private collision: Function

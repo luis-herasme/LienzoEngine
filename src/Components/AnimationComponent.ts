@@ -3,6 +3,7 @@ import {Animation} from 'dibujo'
 import {Vector2D} from 'vector_class'
 
 class AnimationComponent {
+
   private src: string
   private size: Vector2D
   private frameRate: number

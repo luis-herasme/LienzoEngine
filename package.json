@@ -2,7 +2,7 @@
   "name": "testing",
   "version": "1.0.0",
   "description": "",
-  "main": "/src/game/index.ts",
+  "main": "/src/lienzo.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "dibujo": "^5.0.17",
-    "fisica": "^3.0.2",
+    "fisica": "^3.0.3",
     "vector_class": "^3.0.0"
   },
   "devDependencies": {

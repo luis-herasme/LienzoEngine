@@ -1,9 +1,9 @@
 
-import id from '../utils/id'
+//import id from '../utils/id'
 
-export default class Identifier {
+class Identifier {
   public tags : Array<string>
-  public id   : string = id()
+  public id//   : string = id()
   public name : string
 
   constructor (name?, tags?) {
@@ -11,3 +11,5 @@ export default class Identifier {
     this.tags = tags
   }
 }
+
+export default Identifier

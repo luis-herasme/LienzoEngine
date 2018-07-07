@@ -4,7 +4,7 @@
     "allowJs": true
   },
   "files": [
-    "./src/game/index.ts",
+   // "./src/game/index.ts",
     "./src/lienzo.ts"
   ]
 }

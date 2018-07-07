@@ -1,5 +1,5 @@
 
-import Vector2D  from 'vector_class'
+import { Vector2D } from 'vector_class'
 
 class Transform {
   public position: Vector2D = new Vector2D(0, 0)

@@ -1,5 +1,5 @@
 
-export default class SoundComponent {
+class SoundComponent {
   public sound: HTMLAudioElement
   constructor (configuration) {
     this.sound = new Audio(configuration.src)
@@ -9,3 +9,5 @@ export default class SoundComponent {
     this.sound.play()
   }
 }
+
+export default SoundComponent

@@ -4,7 +4,7 @@ import { Vector2D } from 'vector_class'
 import GameObject from '../Managers/GameObject'
 import GameScene from '../Managers/GameScene'
 
-export default class SpriteComponent {
+class SpriteComponent {
   private src: string
   public sprite: Sprite
 
@@ -26,3 +26,5 @@ export default class SpriteComponent {
     Scene.stage.add(this.sprite)
   }
 }
+
+export default SpriteComponent

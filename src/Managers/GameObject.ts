@@ -1,8 +1,14 @@
 
+console.log('gameobject')
+
 import Scene from './GameScene'
+console.log('gmobj 2')
 import TransformComponent from '../Components/TransformComponent'
+console.log('gmobj 2')
 import IdentifierComponent from '../Components/IdentifierComponent'
+console.log('gmobj 2')
 import ScriptComponent from '../Components/ScriptComponent'
+console.log('gmobj 2')
 
 class GameObject {
   public Transform: TransformComponent = new TransformComponent()

@@ -1,20 +1,24 @@
 
+console.log('hola')
+
+import { Vector2D } from 'vector_class'
 import GameObject from './Managers/GameObject'
 import Scene from './Managers/GameScene'
 import Manager from './Managers/GameManager'
-import { Vector2D } from 'vector_class'
 import { Color } from 'dibujo'
 import { Graphic } from 'dibujo'
-import * as number from './utils/number'
 
-const Vector = Vector2D
 
+const mg = new Manager()
+console.log(mg)
+
+/*
 export {
-  number,
   Graphic,
-  Vector,
+  Vector2D,
   GameObject,
   Scene,
   Manager,
   Color
 }
+*/

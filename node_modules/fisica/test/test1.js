@@ -2,7 +2,8 @@
 /* global describe, it */
 
 const expect = require('chai').expect
-const fisica = require('../index')
+const fisica = require('../dist/bundle')
+console.log(fisica)
 
 const engine = new fisica.Engine()
 

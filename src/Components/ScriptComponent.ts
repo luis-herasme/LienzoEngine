@@ -1,7 +1,7 @@
 
 import GameObject from '../Managers/GameObject'
 
-export default class ScriptManager {
+class ScriptManager {
   private methods   : Object = {}
   private gameObject: GameObject
 
@@ -32,3 +32,5 @@ export default class ScriptManager {
     }
   }
 }
+
+export default ScriptManager
