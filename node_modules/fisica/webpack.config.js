@@ -1,7 +1,26 @@
 
 const path = require('path')
 
-module.exports = {
+const serverConfig = {
+  target: 'node',
+  context: __dirname,
+  entry: './src/index.ts',
+  output: {
+    path: path.join(__dirname, '/dist'),
+    filename: 'bundle_server.js',
+    libraryTarget: 'umd'
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js']
+  },
+  module: {
+    rules: [
+      { test: /\.tsx?$/, loader: 'ts-loader' }
+    ]
+  }
+}
+
+const clientConfig = {
   context: __dirname,
   entry: './src/index.ts',
   output: {
@@ -19,3 +38,5 @@ module.exports = {
     ]
   }
 }
+
+module.exports = [ serverConfig, clientConfig ]

@@ -1,71 +1,40 @@
 
-import load from '../loader'
+import { Rect } from 'fisica'
 import { Scene } from 'dibujo'
-import * as fisica from 'fisica'
 import GameObject from './GameObject'
+import GameManager from './GameManager'
 
 class GameScene {
 
-  public stage: Scene
-  public world: fisica.Rect.World// = new fisica.Rect.World()
-  private paused: boolean = false
-  private background: string = '#000000'
-  private gameObjects: Array<GameObject> = []
+  private stage: Scene
+  private world: Rect.World
+  private gameObjects: Array<GameObject>
 
-  constructor(configuration?) {
-    this.world = new fisica.Rect.World(config.gravity)
-    if (config) {
-      if (config.background) {
-        this.background = config.background
-      }
-      if (config.manager) {
-        this.stage = new Scene(config.manager)
-      }
-      if (config.bounds) {
-        this.world.setBounds(config.bounds)
-      }
-      if (config.gameObjects) {
-        this.add(config.gameObjects)
-      }
-    }
+  constructor(manager: GameManager) {
+    this.world = new Rect.World()
+    this.stage = new Scene(manager.getRender())
+    this.gameObjects = []
   }
 
-  add(gameObjects) {
-    for (let gameObject of gameObjects) {
-      const loaded = load(gameObject)
-      this.addGameObject(loaded)
-    }
+  getScene(): Scene {
+    return this.stage
   }
 
-  addGameObject(gameObject: GameObject): void {
-    gameObject.Scene = this
+  getWorld(): Rect.World {
+    return this.world
+  }
 
-    for (let component in gameObject.Components) {
-      const compo = gameObject.Components[component]
-      if (compo.load) {
-        compo.load(gameObject, this)
-      }
-    }
-
-    gameObject.run('init')
+  add(gameObject: GameObject): void {
     this.gameObjects.push(gameObject)
   }
 
-  find(property: string, value: string): Array<GameObject> {
-    let found = []
-    for (let gameObject of this.gameObjects) {
-      if (gameObject.Identifier) {
-        if (gameObject.Identifier[property] === value) {
-          found.push(gameObject)
-        }
-      }
-    }
-    return found
+  remove(gameObject: GameObject): void {
+    this.gameObjects = this.gameObjects.filter(other => gameObject.IdentifierComponent.id !== other.IdentifierComponent.id)
   }
 
-  remove(gameObject: GameObject): void {
-    this.gameObjects = this.gameObjects.filter(other => {
-      return gameObject.Identifier.id !== other.Identifier.id
+  find(property: string, value: string): Array<GameObject> {
+    return this.gameObjects.filter((gameObject) => {
+      return gameObject.IdentifierComponent[property] === value
     })
   }
 
@@ -76,9 +45,9 @@ class GameScene {
   }
 
   update() {
-    this.stage.clear(this.background)
+    this.stage.clearScreen()
     this.world.update()
-    this.stage.update()
+    this.stage.render()
     this.run('update')
   }
 }

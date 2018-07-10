@@ -1,8 +1,8 @@
 
-import { Vector2D } from 'vector_class'
-import { Rect } from 'fisica'
 import GameObject from '../Managers/GameObject'
 import GameScene from '../Managers/GameScene'
+import { Vector2D } from 'vector_class'
+import { Rect } from 'fisica'
 
 class Collider {
 
@@ -22,13 +22,13 @@ class Collider {
   load(gameObject: GameObject, Scene: GameScene) {
     if (this.size === 'fit') {
       if (this.static) {
-        if (gameObject.Components.Sprite) {
+        if (gameObject.SpriteComponent) {
           this.collider = new Rect.Collider(
-            gameObject.Transform.position,
-            gameObject.Transform.scale)
+            gameObject.TransformComponent.position,
+            gameObject.TransformComponent.scale)
         } else {
           this.collider = new Rect.Collider(
-            gameObject.Transform.position,
+            gameObject.TransformComponent.position,
             new Vector2D(50, 50)/*
             gameObject.sprite.getSize()*/
           )
@@ -36,7 +36,7 @@ class Collider {
       }
       else {
         this.collider = new Rect.Dynamic(
-          gameObject.Transform.position,
+          gameObject.TransformComponent.position,
           this.restitution,
           new Vector2D(50, 50)
           /*
@@ -49,13 +49,13 @@ class Collider {
     else {
       if (this.static) {
         this.collider = new Rect.Collider(
-          gameObject.Transform.position,
+          gameObject.TransformComponent.position,
           this.size
         )
       }
       else {
         this.collider = new Rect.Dynamic(
-          gameObject.Transform.position,
+          gameObject.TransformComponent.position,
           this.restitution,
           this.size
         )
@@ -79,6 +79,10 @@ class Collider {
     // }
 
   }
+
+  destroy(world: Rect.World) {
+    world.destroy(this)
+  } 
 }
 
 export default Collider

@@ -142,3 +142,96 @@ class Vector3D {
 }
 
 export default Vector3D
+
+/*
+
+TO ADD
+
+import vector from '../vector'
+
+function rotate (x, y, z, center, vec) {
+  let vecR
+  vecR = vector.sub(vec, center)
+  vecR = rotateX(vecR, x)
+  vecR = rotateY(vecR, y)
+  vecR = rotateZ(vecR, z)
+  vecR = vector.add(vecR, center)
+  return vecR
+}
+
+function rotateX (vec, t) {
+  let vecR = vec
+  let newy = vec[1] * Math.cos(t) - vec[2] * Math.sin(t)
+  let newz = vec[1] * Math.sin(t) + vec[2] * Math.cos(t)
+  vecR[1] = newy
+  vecR[2] = newz
+  return vecR
+}
+
+function rotateY (vec, t) {
+  let vecR = vec
+  let newz = vec[2] * Math.cos(t) - vec[0] * Math.sin(t)
+  let newx = vec[2] * Math.sin(t) + vec[0] * Math.cos(t)
+  vecR[2] = newz
+  vecR[0] = newx
+  return vecR
+}
+
+function rotateZ (vec, t) {
+  let vecR = vec
+  let newx = vec[0] * Math.cos(t) - vec[1] * Math.sin(t)
+  let newy = vec[0] * Math.sin(t) + vec[1] * Math.cos(t)
+  vecR[0] = newx
+  vecR[1] = newy
+  return vecR
+}
+
+const memlength = (vec) => Math.pow(Math.pow(vec[0], 2) + Math.pow(vec[1], 2) + Math.pow(vec[2], 2), 0.5)
+
+const normal = (v1, v2, v3) => vector.cross(vector.sub(v2, v1), vector.sub(v3, v1))
+
+function isInTriangle (vec, triangle) {
+  let u = vector.sub(triangle.v2, triangle.v1)
+  let v = vector.sub(triangle.v3, triangle.v1)
+  let w = vector.sub(vec, triangle.v1)
+
+  let vCrossW = vector.cross(v, w)
+  let vCrossU = vector.cross(v, u)
+
+  if (vector3.dot(vCrossW, vCrossU) < 0) return false
+
+  let uCrossW = vector.cross(u, w)
+  let uCrossV = vector.cross(u, v)
+
+  if (vector3.dot(uCrossW, uCrossV) < 0) return false
+
+  let denom = memlength(uCrossV)
+  let r = memlength(vCrossW) / denom
+  let t = memlength(uCrossW) / denom
+
+  return (r + t <= 1)
+}
+
+function getTriangleArea (triangle) {
+  let temp = vector.cross(vector.sub(triangle.v3, triangle.v1), vector.sub(triangle.v3, triangle.v2))
+  let x = Math.pow(temp[0], 2)
+  let y = Math.pow(temp[1], 2)
+  let z = Math.pow(temp[2], 2)
+  return Math.pow(x + y + z, 0.5) / 2
+}
+
+function dot (vec1, vec2) {
+  return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2]
+}
+
+function getPlaneIntersect (line1, line2, triangle) {
+  let normal = triangle.normal
+  let u = vector3.dot(normal, vector.sub(triangle.v1, line1)) / vector3.dot(normal, vector.sub(line2, line1))
+  return vector.add(line1, vector.mult(vector.sub(line2, line1), u))
+}
+
+const vector3 = { dot, rotate, normal, isInTriangle, getTriangleArea, getPlaneIntersect, memlength }
+
+export default vector3
+
+*/

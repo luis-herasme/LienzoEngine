@@ -1,4 +1,4 @@
-
+/*
 import * as Component from './components/components'
 import GameObject from './Managers/GameObject'
 
@@ -28,3 +28,4 @@ function load(configuration): GameObject {
 }
 
 export default load
+*/

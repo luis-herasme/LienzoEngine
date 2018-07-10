@@ -1,36 +1,50 @@
 
-console.log('gameobject')
-
-import Scene from './GameScene'
-console.log('gmobj 2')
-import TransformComponent from '../Components/TransformComponent'
-console.log('gmobj 2')
 import IdentifierComponent from '../Components/IdentifierComponent'
-console.log('gmobj 2')
+import AnimationComponent from '../Components/AnimationComponent'
+import TransformComponent from '../Components/TransformComponent'
+import ColliderComponent from '../Components/ColliderComponent'
+import SpriteComponent from '../Components/SpriteComponent'
 import ScriptComponent from '../Components/ScriptComponent'
-console.log('gmobj 2')
+import SoundComponent from '../Components/SoundComponent'
+import GameScene from '../Managers/GameScene'
 
 class GameObject {
-  public Transform: TransformComponent = new TransformComponent()
-  public Identifier: IdentifierComponent = new IdentifierComponent()
-  public Script: ScriptComponent = new ScriptComponent(this)
-  public Scene: Scene
-  public Components
+  
+  private AnimationComponent: AnimationComponent
+  private TransformComponent: TransformComponent
+  private ColliderComponent: ColliderComponent
+  private SpriteComponent: SpriteComponent
+  private ScriptComponent: ScriptComponent
+  private SoundComponent: SoundComponent
+  private scene: GameScene
+  
+  public IdentifierComponent: IdentifierComponent
 
-  constructor(components) {
-    this.Components = components
+  constructor() {
+    this.IdentifierComponent = new IdentifierComponent()
+    this.TransformComponent = new TransformComponent()
+    this.ScriptComponent = new ScriptComponent(this)
   }
 
-  run(name: string, params?: Array<any>): void {
-    this.Script.run(name, params)
+  run(name: string, params: Array<any>): void {
+    this.ScriptComponent.run(name, params)
   }
 
   destroy(): void {
-    this.Components.forEach(component => {
-      component.destroy()
-    })
-    this.Scene.remove(this)
+    if (this.AnimationComponent) this.AnimationComponent.destroy(this.scene.getScene())
+    if (this.ColliderComponent) this.ColliderComponent.destroy(this.scene.getWorld())
+    if (this.SpriteComponent) this.SpriteComponent.destroy(this.scene.getScene())
+    this.scene.remove(this)
   }
 }
 
 export default GameObject
+/*
+    gameObject.Scene = this
+    for (let component in gameObject.Components) {
+      const compo = gameObject.Components[component]
+      if (compo.load) {
+        compo.load(gameObject, this)
+      }
+    }
+*/

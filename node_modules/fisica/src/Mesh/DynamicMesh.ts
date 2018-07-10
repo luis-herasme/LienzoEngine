@@ -4,7 +4,7 @@ import Figure from './Figure'
 
 class Mesh extends Body {
     public vertices: Figure
-    constructor (config) {
+    constructor(config) {
         super(config)
         this.vertices = new Figure()
         config.vertices.forEach((vertex) => this.vertices.add(vertex))

@@ -14,9 +14,9 @@ class World {
     this.circleParticles = []
     this.rectParticles = []
 
-    this.maxPositionX = window.innerWidth
+    this.maxPositionX = 800
     this.minPositionX = 0
-    this.maxPositionY = window.innerHeight
+    this.maxPositionY = 600
     this.minPositionY = 0
   }
 

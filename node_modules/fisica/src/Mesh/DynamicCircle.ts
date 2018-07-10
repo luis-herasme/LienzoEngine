@@ -1,8 +1,8 @@
 import Body from './Body'
 
 class Circle extends Body {
-    
-    constructor (config) {
+
+    constructor(config) {
         super(config)
         this.center = config.position
         this.far = config.radius

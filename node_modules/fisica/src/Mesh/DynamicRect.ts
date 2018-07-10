@@ -1,9 +1,9 @@
 
-import {Vector2D} from 'vector_class'
+import { Vector2D } from 'vector_class'
 import Mesh from './DynamicMesh'
 
 class Rect extends Mesh {
-    constructor (config) {
+    constructor(config) {
         super(config)
         const pointY = Vector2D.add(config.position, [0, config.height])
         const pointX = Vector2D.add(config.position, [config.width, 0])

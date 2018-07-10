@@ -1,8 +1,8 @@
 
-import {Animation} from 'dibujo'
-import {Vector2D} from 'vector_class'
+import { Animation } from 'dibujo'
+import { Vector2D } from 'vector_class'
 
-class AnimationComponent {
+class AnimationComponent extends Animation{
 
   private src: string
   private size: Vector2D
@@ -16,15 +16,20 @@ class AnimationComponent {
     this.frameRate = config.frameRate ? config.frameRate : 1000 / 60
   }
 
-  load(gameObject, Scene) {
-    const animation = new Animation(
-      this.src,
-      gameObject.Transform.scale,
-      gameObject.Transform.position,
-      this.frameRate,
-      this.size)
-    Scene.stage.add(animation)
+  load(gameObject, scene) {
+    const animation = new Animation({
+      src: this.src,
+      position: gameObject.Transform.position,
+      scale: gameObject.Transform.scale,
+      frameRate: this.frameRate,
+      size: this.size
+    })
+    scene.stage.add(animation)
   }
-} 
+
+  destroy(scene) {
+    scene.destroy(this)
+  }
+}
 
 export default AnimationComponent

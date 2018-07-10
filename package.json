@@ -9,9 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.1.2",
     "dibujo": "^5.0.17",
     "fisica": "^3.0.3",
-    "vector_class": "^3.0.0"
+    "mocha": "^5.2.0",
+    "save-dev": "^2.0.0",
+    "vector_class": "^3.0.2"
   },
   "devDependencies": {
     "typescript": "^2.9.2"

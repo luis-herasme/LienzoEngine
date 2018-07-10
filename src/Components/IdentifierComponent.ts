@@ -2,11 +2,11 @@
 //import id from '../utils/id'
 
 class Identifier {
-  public tags : Array<string>
+  public tags: Array<string>
   public id//   : string = id()
-  public name : string
+  public name: string
 
-  constructor (name?, tags?) {
+  constructor(name?, tags?) {
     this.name = name
     this.tags = tags
   }
