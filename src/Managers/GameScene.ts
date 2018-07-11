@@ -1,27 +1,17 @@
-
 import { Rect } from 'fisica'
 import { Scene } from 'dibujo'
 import GameObject from './GameObject'
 import GameManager from './GameManager'
 
 class GameScene {
-
-  private stage: Scene
-  private world: Rect.World
+  public renderScene: Scene
+  public physicsScene: Rect.World
   private gameObjects: Array<GameObject>
 
   constructor(manager: GameManager) {
-    this.world = new Rect.World()
-    this.stage = new Scene(manager.getRender())
+    this.physicsScene = new Rect.World()
+    this.renderScene = new Scene(manager.getRender())
     this.gameObjects = []
-  }
-
-  getScene(): Scene {
-    return this.stage
-  }
-
-  getWorld(): Rect.World {
-    return this.world
   }
 
   add(gameObject: GameObject): void {
@@ -29,12 +19,14 @@ class GameScene {
   }
 
   remove(gameObject: GameObject): void {
-    this.gameObjects = this.gameObjects.filter(other => gameObject.IdentifierComponent.id !== other.IdentifierComponent.id)
+    this.gameObjects = this.gameObjects.filter(other => {
+      return gameObject.identifierComponent.id !== other.identifierComponent.id
+    })
   }
 
   find(property: string, value: string): Array<GameObject> {
     return this.gameObjects.filter((gameObject) => {
-      return gameObject.IdentifierComponent[property] === value
+      return gameObject.identifierComponent[property] === value
     })
   }
 
@@ -44,10 +36,9 @@ class GameScene {
     }
   }
 
-  update() {
-    this.stage.clearScreen()
-    this.world.update()
-    this.stage.render()
+  update(): void {
+    this.physicsScene.update()
+    this.renderScene.render()
     this.run('update')
   }
 }

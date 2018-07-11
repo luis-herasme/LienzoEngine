@@ -1,37 +1,24 @@
-import { Color } from "../node_modules/dibujo/src";
-import GameObject from "./Managers/GameObject";
 
-/*
-import {Scene, GameObject, Sprite, Script, Manager} from './lienzo'
+import { Scene, GameObject, SpriteComponent, Manager } from './lienzo'
+
 const manager = new Manager()
-const scene = new Scene()
 const player = new GameObject()
-const script = new Script({
-    update () {
+const scene = new Scene(manager)
+
+player.scriptComponent.add({
+    update() {
         this.position.x += .1
     }
 })
-const sprite = new Sprite({
-    src: './assets/Slime.png'
-})
-player.add(script)
-player.add(sprite)
+player.setSprite('./assets/Slime.png')
+
 scene.add(player)
-izi.start()
-*/
+manager.setScene(scene)
+manager.start()
 
 /*
-{
-    Scenes: [
-        {
-            gravity: Number,
-            background: Color,
-            GameObjects: Array<GameObject> = [
-                {
-                    
-                }
-            ]
-        },
-    ]
-}
+player.colliderComponent({
+    width: 10,
+    heigth: 10
+})
 */

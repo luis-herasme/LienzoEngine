@@ -1,10 +1,7 @@
-
 import { Render } from 'dibujo'
 import GameScene from './GameScene'
-import { Vector2D } from 'vector_class'
 
 class GameManager {
-
   private render: Render
   private scene: GameScene
   private interval
@@ -12,6 +9,10 @@ class GameManager {
   constructor(id?: string, width?: number, height?: number) {
     this.render = new Render(id, width, height)
     this.scene = new GameScene(this)
+  }
+
+  setScene(scene: GameScene): void {
+    this.scene = scene
   }
 
   public getRender(): Render {
