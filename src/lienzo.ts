@@ -17,6 +17,28 @@ import SpriteComponent from './Components/SpriteComponent'
 import ColliderComponent from './Components/ColliderComponent'
 // import AnimationComponent from './Components/AnimationComponent'
 
+
+// import { Scene, GameObject, SpriteComponent, Manager } from './lienzo'
+
+const manager = new Manager()
+const scene = new Scene(manager)
+const player = new GameObject(scene)
+
+player.scriptComponent.add({
+    update() {
+      console.log('Update call')
+        // this.transformComponent.position.x += .1
+    }
+})
+player.setSprite('../assets/ball.png')
+
+scene.add(player)
+manager.setScene(scene)
+manager.start()
+/*
+
+
+
 export {
 //AnimationComponent,
   ColliderComponent,
@@ -28,3 +50,4 @@ export {
   Scene,
   Color
 }
+*/

@@ -69,7 +69,7 @@ class Vector3D {
     this.mult(mag)
   }
 
-  setAngle (angle): void {
+  setAngle (angle: number): void {
     const magnitude = this.mag()
 
     this.x = magnitude * Math.cos(angle)

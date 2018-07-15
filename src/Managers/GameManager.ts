@@ -22,7 +22,7 @@ class GameManager {
   public start(): void {
     this.scene.run('start')
     this.interval = setInterval(() => {
-      this.scene.run('update')
+      this.scene.update()
     })
   }
 

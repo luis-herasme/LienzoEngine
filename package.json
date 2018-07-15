@@ -10,13 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.1.2",
-    "dibujo": "^5.0.17",
-    "fisica": "^3.0.3",
+    "dibujo": "^5.0.21",
+    "fisica": "^3.0.5",
     "mocha": "^5.2.0",
     "save-dev": "^2.0.0",
-    "vector_class": "^3.0.2"
+    "vector_class": "^3.0.3"
   },
   "devDependencies": {
+    "ts-loader": "^4.4.2",
     "typescript": "^2.9.2"
   }
 }

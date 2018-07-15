@@ -19,10 +19,11 @@ class GameObject {
 
   private scene: GameScene
 
-  constructor() {
+  constructor(scene: GameScene) {
     this.identifierComponent = new IdentifierComponent()
     this.transformComponent = new TransformComponent()
     this.scriptComponent = new ScriptComponent(this)
+    this.scene = scene
   }
 
   setSprite(src: string): void {
