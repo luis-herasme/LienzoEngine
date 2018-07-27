@@ -54,7 +54,10 @@ class GameObject {
   }
 
   update(): void {
-    this.spriteComponent.position = this.colliderComponent.position
+    if (this.colliderComponent) {
+      this.transformComponent.position = this.colliderComponent.position 
+    }
+    this.spriteComponent.position = this.transformComponent.position
   }
 
   destroy(): void {
