@@ -5,6 +5,6 @@
   },
   "files": [
    // "./src/game/index.ts",
-    "./src/lienzo.ts"
+    "./src/engine/lienzo.ts"
   ]
 }
