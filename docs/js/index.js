@@ -17,7 +17,7 @@ const examples = [
         manager.add(tree)
         manager.start()
         `,
-        src: 'examples/images/index.html',
+        src: '../examples/images/index.html',
     },{
         title: 'Follow mouse on click',
         code: `
@@ -30,12 +30,11 @@ const examples = [
             },
             Script: {
                 update() {
-                    if (this.follow) {
+                    if (this.mouse) {
                         this.transformComponent.position.moveTowards(this.mouse)
                     }
                 },
                 click(mouse) {
-                    this.follow = !this.follow
                     this.mouse = mouse
                 }
             }
@@ -43,7 +42,7 @@ const examples = [
         manager.add(tree)
         manager.start()
         `,
-        src: 'examples/mouseFollow/index.html'
+        src: '../examples/mouseFollow/index.html'
     }
 ]
 

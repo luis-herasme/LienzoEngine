@@ -7,12 +7,11 @@ const tree = manager.gameObject({
     },
     Script: {
         update() {
-            if (this.follow) {
+            if (this.mouse) {
                 this.transformComponent.position.moveTowards(this.mouse)
             }
         },
         click(mouse) {
-            this.follow = !this.follow
             this.mouse = mouse
         }
     }
