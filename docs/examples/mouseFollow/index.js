@@ -1,5 +1,5 @@
 const manager = new engine.GameManager()
-const tree = manager.gameObject({
+const block = manager.gameObject({
     Sprite: {
         src: '../../assets/character.png',
         width: 50,
@@ -16,5 +16,5 @@ const tree = manager.gameObject({
         }
     }
 })
-manager.add(tree)
+manager.add(block)
 manager.start()

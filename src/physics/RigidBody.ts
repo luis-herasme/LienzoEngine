@@ -37,7 +37,7 @@ class RigidBody {
         this.velocity.div(totalMass)
         
         
-        this.velocity.div(2)
+    //    this.velocity.div(2)
         
         // Other velocity
         other.velocity = Vector2D.sub(velocity1, velocity2)
@@ -45,7 +45,7 @@ class RigidBody {
         other.velocity.add(totalMomentum)
         other.velocity.div(totalMass)
 
-        other.velocity.div(2)
+     //   other.velocity.div(2)
     
        // velocity.inverse()
     }

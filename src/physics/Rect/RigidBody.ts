@@ -32,22 +32,33 @@ class RigidBody extends _RigidBody {
           console.log('crossHeight', crossHeight)
           console.log('dy', dy)
           */
-         this.velocity.mult(0.8)
+        
          this.velocity.y *= -1
 
          this.position.y += (height - dy)
         } else {
+          
+          this.velocity.x *= -1
+ 
+          this.position.x -= (dx + width)
          // console.log('left')
+
         }
       } else {
         if ((crossWidth > -(crossHeight))) {
+          
+          this.velocity.x *= -1
+ 
+          this.position.x += (width - dx)
+
+
          // console.log('right')
         } else {
         /*  console.log('height', height)
           console.log('crossHeight', crossHeight)
           console.log('dy', dy)
           */
-         this.velocity.mult(0.8)
+
          this.velocity.y *= -1
 
          this.position.y -= (dy + height)
@@ -70,11 +81,10 @@ class RigidBody extends _RigidBody {
         other.onCollision(this)
       }
 
-      /*
+      
       if (other instanceof RigidBody) {
         this.inelasticCollision(other)
       }
-      */
       this.separate(other)
       /*
             if (other instanceof Collider) {

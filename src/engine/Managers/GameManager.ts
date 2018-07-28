@@ -4,7 +4,7 @@ import GameObject from './GameObject'
 
 class GameManager {
   private render: Render
-  private scene: GameScene
+  public scene: GameScene
   private scenes = {}
   private interval
 
