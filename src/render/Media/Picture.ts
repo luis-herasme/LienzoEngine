@@ -7,7 +7,7 @@ const context = canvas.getContext('2d')
 
 class Picture extends CircleEvents {
   public data: any
-  public angle: number
+  public rotation: number
   public width: number
   public height: number
   public ready: boolean
@@ -44,7 +44,7 @@ class Picture extends CircleEvents {
       console.error('Error loading the image...')
     })
 
-    this.angle = data.angle ? data.angle : 0
+    this.rotation = data.rotation ? data.rotation : 0
     this.opacity = data.opacity ? data.opacity : 1
     this.width = data.width ? data.width : this.image.width
     this.height = data.height ? data.height : this.image.height
@@ -103,7 +103,7 @@ class Picture extends CircleEvents {
     this.context.beginPath()
     this.context.save()
     this.context.translate(this.position.x, this.position.y)
-    this.context.rotate(this.angle)
+    this.context.rotate(this.rotation)
     this.context.globalAlpha = this.opacity
     this.context.drawImage(this.image, -(this.anchor.x * this.width), -(this.anchor.y * this.height), this.width, this.height)
     // this.context.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)

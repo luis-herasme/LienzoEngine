@@ -28,8 +28,8 @@ class Transform {
   translate(x, y): void {
     const translationY = Vector2D.angleMagnitude(this.rotation, y)
     const translationX = Vector2D.angleMagnitude(this.rotation + Math.PI / 2, x)
-    this.position.add(new Vector2D(translationY[0], translationY[1]))
-    this.position.add(new Vector2D(translationX[0], translationX[1]))
+    this.position.add(new Vector2D(translationY.x, translationY.y))
+    this.position.add(new Vector2D(translationX.x, translationX.y))
   }
 }
 

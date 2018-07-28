@@ -4,28 +4,15 @@ import Event from './Event'
 class KeyBoard extends Event{
   public keys: Array<string> = []
 
-  press (key: string, func: Function) {
-    const func2 = (self: any, event: any) => {
-      // console.log(event.key === key)
-      // console.log(event.key, key)
-      if (event.key === key) {
-        // console.log(func)
-        func(this, event)
-      }
-    }
-
+  press (func: Function) {
     if (!this.events.keypressActive) {
       this.events.keypressActive = true
       this.initEvent('keypress')
     }
-    this.events.keypress.push(func2)
+    this.events.keypress.push(func)
   }
 
-  down (key: string, func: Function) {
-    func = (self: any, event: any) => {
-      if (event.key === key) func(this, event)
-    }
-
+  down (func: Function) {
     if (!this.events.keydownActive) {
       this.events.keydownActive = true
       this.initEvent('keydown')

@@ -57,6 +57,7 @@ class GameObject {
     if (this.colliderComponent) {
       this.transformComponent.position = this.colliderComponent.position 
     }
+    this.spriteComponent.rotation = this.transformComponent.rotation
     this.spriteComponent.position = this.transformComponent.position
   }
 

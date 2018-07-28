@@ -36,7 +36,7 @@ class Event {
 
   public initEvent (name: string): void {
     document.addEventListener(name, (event) => {
-      this.events[name].forEach((func: Function) => func(this, event))
+      this.events[name].forEach((func: Function) => func(event, this))
     })
   }
 }
