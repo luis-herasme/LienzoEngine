@@ -1,7 +1,7 @@
 const manager = new engine.GameManager()
 const tree = manager.gameObject({
     Sprite: {
-        src: '../../assets/character.png',
+        src: '../../../assets/character.png',
         width: 50,
         height: 50
     },

@@ -17,7 +17,7 @@ const examples = [
         manager.add(tree)
         manager.start()
         `,
-        src: '../examples/images/index.html',
+        src: 'examples/images/index.html',
     },{
         title: 'Follow mouse on click',
         code: `
@@ -42,7 +42,7 @@ const examples = [
         manager.add(tree)
         manager.start()
         `,
-        src: '../examples/mouseFollow/index.html'
+        src: 'examples/mouseFollow/index.html'
     }
 ]
 
