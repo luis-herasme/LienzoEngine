@@ -8,11 +8,11 @@ const examples = [
         code: `
         const manager = new engine.GameManager()
         const tree = manager.gameObject({
-        Sprite: {
-        src: '../../assets/tree.png',
-        width: 50,
-        height: 50
-        }
+            Sprite: {
+                src: '../../assets/tree.png',
+                width: 50,
+                height: 50
+            }
         })
         manager.add(tree)
         manager.start()
@@ -131,22 +131,26 @@ for (let item of examples) {
     examplesList.innerHTML += `<a href='#${id}' class="collection-item">${item.title}</a>`
     examplesDOM.innerHTML += `
 <div class="row" id="${id}">
-<div class="col m12">
-    <h4>${item.title}</h4>
-</div>
+<div class="card">
+<div class="card-content">
 
-<div class="col m12">
+    <h4>${item.title}</h4>
+
+
+
     <iframe style="padding: 0px; width: 100%; height: 400px; border-radius: 0.3em;" src=${item.src} frameborder="0"></iframe>
-</div>
-<div class="col m12">
+
+
     <pre style="margin: 0%;">
 <code class="lang-javascript">
 ${item.code}
 </code>
 </pre>
+
 </div>
 </div>
-<hr>
+</div>
+
     `
 }
 function makeid() {

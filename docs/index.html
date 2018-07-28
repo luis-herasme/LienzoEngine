@@ -10,16 +10,40 @@
   <link rel="stylesheet" href="./prism.css">
   <script src="./materialize/js/materialize.min.js"></script>
   <link rel="stylesheet" href="./materialize/css/materialize.min.css">
-
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
+    html{   
+    background: #272822;
+    
+}
+  h1 {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bolder;
+    color: white;
+  }
+  h4, h3 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bolder;
+    color: #272822 !important;
+  }
+  a {
+    color: #00B4DB !important;  /* fallback for old browsers */
+  }
+  .collection-header{
+    background-color: white;
+  }
+  </style>
 </head>
 
 <body>
   <div class="container">
+      <h1>Lienzo Core</h1>
     <div class="row">
       <div class="col m4">
-        <h3>Examples</h3>
         <div class="collection" id="examplesList">
-      
+          
+            <h4 class="collection-header" style="margin: 0px; padding-top: 41.1px; padding-left: 20px;">Examples</h4>
         </div>
       </div>
       <div class="col m8" id='examples'>
