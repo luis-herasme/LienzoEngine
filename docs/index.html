@@ -12,38 +12,56 @@
   <link rel="stylesheet" href="./materialize/css/materialize.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css?family=Roboto');
-    html{   
-    background: #272822;
-    
-}
-  h1 {
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bolder;
-    color: white;
+    html {
+      background: #000;
+
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bolder;
+      color: white;
+    }
+  .logo{
+    text-align: center
   }
-  h4, h3 {
-    font-family: 'Roboto', sans-serif;
-    font-weight: bolder;
-    color: #272822 !important;
-  }
-  a {
-    color: #00B4DB !important;  /* fallback for old browsers */
-  }
-  .collection-header{
-    background-color: white;
-  }
+    h4,
+    h3 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: bolder;
+      color: #272822 !important;
+    }
+
+    a {
+      color: #00B4DB !important;
+      /* fallback for old browsers */
+    }
+
+    .collection-header {
+      background-color: white;
+    }
+    .imgLg{
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-      <h1>Lienzo Core</h1>
+    <div class="row">
+
+    <div class="col m3 s12 logo">
+      <img src="Lienzo.png" class="imgLg" alt="">
+    </div>
+  </div>
+    <a href="https://www.patreon.com/user?u=12691597">
+      <img src="assets/become_a_patron_button.png" alt="">
+    </a>
     <div class="row">
       <div class="col m4">
         <div class="collection" id="examplesList">
-          
-            <h4 class="collection-header" style="margin: 0px; padding-top: 41.1px; padding-left: 20px;">Examples</h4>
+          <h4 class="collection-header" style="margin: 0px; padding-top: 41.1px; padding-left: 20px;">Examples</h4>
         </div>
       </div>
       <div class="col m8" id='examples'>
